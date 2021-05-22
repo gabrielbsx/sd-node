@@ -1,0 +1,138 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+        <a class="sidebar-brand brand-logo" href="#">
+            <img src="/public/assets/images/brand.png" alt="logo" />
+        </a>
+        <a class="sidebar-brand brand-logo-mini" href="#">
+            <img src="/public/assets/images/brand.png" alt="logo" />
+        </a>
+    </div>
+    <ul class="nav">
+        <li class="nav-item profile">
+            <div class="profile-desc">
+                <div class="profile-pic">
+                    <div class="count-indicator">
+                        <img class="img-xs rounded-circle" src="/public/assets/img/profile/avatar.png" alt="">
+                        <span class="count bg-success"></span>
+                    </div>
+                    <div class="profile-name">
+                        <h5 class="mb-0 font-weight-normal"><%= user.name.charAt(0).toUpperCase() + user.name.slice(1) %></h5>
+                        <span>
+                            <%= user.email %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item nav-category">
+            <span class="nav-link">Menu</span>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" href="/home">
+                <span class="menu-icon">
+                    <i class="mdi mdi-home"></i>
+                </span>
+                <span class="menu-title">Início</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" data-toggle="collapse" href="#profile" aria-expanded="false" aria-controls="profile">
+                <span class="menu-icon">
+                    <i class="mdi mdi-account"></i>
+                </span>
+                <span class="menu-title">Perfil</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="profile">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/change-password">Alterar senha</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/recovery-numeric-password">Recuperação de numérica</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" href="/guildmark">
+                <span class="menu-icon">
+                    <i class="mdi mdi-image"></i>
+                </span>
+                <span class="menu-title">Guildmark</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" data-toggle="collapse" href="#ranking" aria-expanded="false" aria-controls="ranking">
+                <span class="menu-icon">
+                    <i class="mdi mdi-tournament"></i>
+                </span>
+                <span class="menu-title">Ranking</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ranking">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ranking-players">Ranking de players</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ranking-cities">Ranking de cidades</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" data-toggle="collapse" href="#donateuser" aria-expanded="false" aria-controls="donateuser">
+                <span class="menu-icon">
+                    <i class="mdi mdi-cards-heart"></i>
+                </span>
+                <span class="menu-title">Doações</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="donateuser">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/donate">Doação</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/donate-rules">Regras</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <% if (user.access === 3) { %>
+            <li class="nav-item nav-category">
+                <span class="nav-link">Administração</span>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" data-toggle="collapse" href="#donatesystem" aria-expanded="false" aria-controls="donatesystem">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-account"></i>
+                    </span>
+                    <span class="menu-title">Doação</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="donatesystem">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/donate-packages">Pacotes de doação</a>
+                        </li>
+                    </ul>
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/payment-gateway">Gateways de pagamento</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="/docs">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-file-document-box"></i>
+                    </span>
+                    <span class="menu-title">Documentação</span>
+                </a>
+            </li>
+        <% } %>
+    </ul>
+</nav>

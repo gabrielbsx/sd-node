@@ -1,0 +1,113 @@
+<div class="col-md-12 grid-margin stretch-card list-donate-items">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex flex-row justify-content-between border-bottom">
+                Lista de bonificações <a href="/donate-packages" class="btn btn-primary my-1">Voltar</a>
+            </div>
+            <div class="d-flex table-responsive flex-row row px-4 justify-content-center my-2 py-4 text-center list-donate-items-table">
+                <table class="table table-dark table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome do item</th>
+                            <th>Item Index</th>
+                            <th>Effect 01</th>
+                            <th>Effect Value 01</th>
+                            <th>Effect 02</th>
+                            <th>Effect Value 02</th>
+                            <th>Effect 03</th>
+                            <th>Effect Value 03</th>
+                            <th colspan="2">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (data.rows.length > 0) { %>
+                            <% data.rows.forEach(async (value, key) => { %>
+                                <tr>
+                                    <td><%= value.itemname %></td>
+                                    <td><%= value.item_id %></td>
+                                    <td><%= value.eff1 %></td>
+                                    <td><%= value.effv1 %></td>
+                                    <td><%= value.eff2 %></td>
+                                    <td><%= value.effv2 %></td>
+                                    <td><%= value.eff3 %></td>
+                                    <td><%= value.effv3 %></td>
+                                    <td><a class="btn btn-primary" href="/update-donate-items/<%= value.id %>">Atualizar</a></td>
+                                    <td><a class="btn btn-danger" href="/delete-donate-items/<%= value.id %>">Deletar</a></td>
+                                </tr>
+                            <% }); %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+            <%- include('../../partials/pagination.ejs') %>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 grid-margin stretch-card donate-items">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex flex-row justify-content-between border-bottom">
+                Adicionar bonificação
+            </div>
+            <div class="d-flex flex-row row px-4 justify-content-center my-2 bg-dark py-4 text-center">
+                <div class="justify-content-center text-center mx-auto">
+                    <form method="POST" action="/donate-items">
+                        <input name="id_package" value="<%= id_package %>" type="hidden"> 
+                        <div class="input-group my-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Nome do item:</span>
+                            </div>
+                            <input class="form-control" name="itemname" type="text" placeholder="Poeira de Lacterium">
+                            <div class="mx-1"></div>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Item index:</span>
+                            </div>
+                            <input class="form-control" name="item_id" type="number" placeholder="413">
+                        </div>
+                        <div class="input-group my-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Efeito 01:</span>
+                            </div>
+                            <input class="form-control" name="eff1" type="number" placeholder="61">
+                            <div class="mx-1"></div>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Valor do efeito 01:</span>
+                            </div>
+                            <input class="form-control" name="effv1" type="number" placeholder="1">
+                        </div>
+                        <div class="input-group my-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Efeito 02:</span>
+                            </div>
+                            <input class="form-control" name="eff2" type="number" placeholder="0">
+                            <div class="mx-1"></div>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Valor do efeito 02:</span>
+                            </div>
+                            <input class="form-control" name="effv2" type="number" placeholder="0">
+                        </div>
+                        <div class="input-group my-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Efeito 03:</span>
+                            </div>
+                            <input class="form-control" name="eff3" type="number" placeholder="0">
+                            <div class="mx-1"></div>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Valor do efeito 03   :</span>
+                            </div>
+                            <input class="form-control" name="effv3" type="number" placeholder="0">
+                        </div>
+                        <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                        <input type="hidden" name="action" value="validate_captcha">
+                        <div class="form-group mt-3 mb-1">
+                            <button type="submit" class="btn btn-primary">
+                                Adicionar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

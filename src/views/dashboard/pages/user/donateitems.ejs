@@ -1,0 +1,97 @@
+<div class="col-md-12 grid-margin stretch-card donate-packages">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex flex-row justify-content-between border-bottom">
+                Lista de bonificações
+            </div>
+            <div class="d-flex flex-row row px-4 table-responsive justify-content-center my-2 py-4 text-center list-donate-packages">
+                <table class="table table-dark table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome do item</th>
+                            <th>Item Index</th>
+                            <th>Effect 01</th>
+                            <th>Effect Value 01</th>
+                            <th>Effect 02</th>
+                            <th>Effect Value 02</th>
+                            <th>Effect 03</th>
+                            <th>Effect Value 03</th>
+                            <th colspan="2">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% data.rows.forEach((value, key) => { %>
+                            <tr>
+                                <td><%= value.itemname %></td>
+                                <td><%= value.item_id %></td>
+                                <td><%= value.eff1 %></td>
+                                <td><%= value.effv1 %></td>
+                                <td><%= value.eff2 %></td>
+                                <td><%= value.effv2 %></td>
+                                <td><%= value.eff3 %></td>
+                                <td><%= value.effv3 %></td>
+                                <td><a class="btn btn-primary" href="/update-donate-items/<%= value.id %>">Atualizar</a></td>
+                                <td><a class="btn btn-danger" href="/delete-donate-items/<%= value.id %>">Deletar</a></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            <%- include('../../partials/pagination.ejs') %>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 grid-margin stretch-card donate-items">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex flex-row justify-content-between border-bottom">
+                Adicionar bonificação
+            </div>
+            <div class="d-flex flex-row row px-4 justify-content-center my-2 bg-dark py-4 text-center">
+                <div class="justify-content-center text-center mx-auto">
+                    <form method="POST" action="/donate-items">
+                        <div class="form-group my-1">
+                            <select class="form-control" name="id_package" type="text">
+                                <% packages.forEach((value, index) => { %>
+                                    <option value="<%= value.id %>"><%= value.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="form-group my-1">
+                            <input class="form-control" name="itemname" type="text" placeholder="Nome do item">
+                        </div>
+                        <div class="form-group my-1">
+                            <input class="form-control" name="item_id" type="number" placeholder="Item index">
+                        </div>
+                        <div class="form-group my-1">
+                            <input class="form-control" name="eff1" type="number" placeholder="Item efeito 1">
+                        </div>
+                        <div class="form-group my-1">
+                            <input class="form-control" name="effv1" type="number" placeholder="Item valor de efeito 1">
+                        </div>
+                        <div class="form-group my-1">
+                            <input class="form-control" name="eff2" type="number" placeholder="Item efeito 2">
+                        </div>
+                        <div class="form-group my-1">
+                            <input class="form-control" name="effv2" type="number" placeholder="Item valode de efeito 2">
+                        </div>
+                        <div class="form-group my-1">
+                            <input class="form-control" name="eff3" type="number" placeholder="Item efeito 3">
+                        </div>
+                        <div class="form-group my-1">
+                            <input class="form-control" name="effv3" type="number" placeholder="Item valor de efeito 3">
+                        </div>
+                        <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                        <input type="hidden" name="action" value="validate_captcha">
+                        <div class="form-group mt-3 mb-1">
+                            <button type="submit" class="btn btn-primary">
+                                Adicionar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

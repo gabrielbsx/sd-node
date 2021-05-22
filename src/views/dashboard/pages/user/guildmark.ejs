@@ -1,0 +1,28 @@
+<div class="col-md-8 grid-margin stretch-card guildmark">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex flex-row justify-content-between border-bottom">
+                Guildmark
+            </div>
+            <div class="d-flex flex-row justify-content-center my-2 text-center">
+                <form id="formGuildmark" method="POST" enctype="multipart/form-data" action="/guildmark">
+                    <div class="form-group guildname my-1">
+                        <select name="guildid" class="form-control">
+                            <option value="11">Guildx</option>
+                        </select>
+                    </div>
+                    <div class="form-group my-1">
+                        <input class="form-control" name="guildmark" type="file">
+                    </div>
+                    <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                    <input type="hidden" name="action" value="validate_captcha">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            Enviar guildmark
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

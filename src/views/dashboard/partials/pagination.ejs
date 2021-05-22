@@ -1,0 +1,27 @@
+<% if (typeof data.count !== 'undefined'){ %>
+    <div id="pagination" class="row justify-content-center mx-auto">
+        <nav class="nav">
+            <li class="nav-item">
+                <a class="nav-link btn btn-primary mx-1 p-2" href="?page=1">
+                    Primeira página
+                </a>
+            </li>
+            <% if (Math.ceil(data.count / 5) >= 3) { %>
+                <% for (let i = 0; i < Math.ceil(data.count / 5); i++) { %>
+                    <li class="nav-item">
+                        <a href="?page=<%= i + 1 %>" class="nav-link btn btn-primary p-2 mx-1">
+                            <%= i + 1 %>
+                        </a>
+                    </li>
+                <% } %>
+            <% } %>
+            <% if ((data.count / 5) > 1) { %>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary mx-1 p-2" href="?page=<%= Math.ceil(data.count / 5) %>">
+                        Última página
+                    </a>
+                </li>
+            <% } %>
+        </nav>
+    </div>
+<% } %>

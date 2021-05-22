@@ -1,0 +1,25 @@
+<div id="recovery">
+    <form id="recovery" action="/recovery" method="POST">
+        <div class="input-group mb-4">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="far fa-envelope"></i></span>
+            </div>
+            <input type="text" class="form-control" name="email" placeholder="E-mail">
+        </div>
+        <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+        <input type="hidden" name="action" value="validate_captcha">
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary py-3 px-5">
+                Recuperar conta
+            </button>
+        </div>
+    </form>
+    <div class="form-group text-center">
+        <a class="btn btn-success mx-1" href="/login">
+            Login
+        </a>
+        <a class="btn btn-danger mx-1" href="/register">
+            Cadastro
+        </a>
+    </div>
+</div>

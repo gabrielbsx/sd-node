@@ -1,0 +1,93 @@
+<div class="col-md-12 grid-margin stretch-card donate-packages">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex flex-row justify-content-between border-bottom">
+                Lista de pacotes de doações
+            </div>
+            <div
+                class="d-flex table-responsive flex-row row px-4 justify-content-center my-2 py-4 text-center list-donate-packages">
+                <table class="table table-dark table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome do pacote</th>
+                            <th>Valor [R$]</th>
+                            <th>Valor [Donate]</th>
+                            <th>Bônus [%]</th>
+                            <th colspan="2">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% data.rows.forEach((value, key)=> { %>
+                            <tr>
+                                <td>
+                                    <%= value.name %>
+                                </td>
+                                <td>
+                                    <%= value.value %>
+                                </td>
+                                <td>
+                                    <%= value.donate %>
+                                </td>
+                                <td>
+                                    <%= value.percent %>
+                                </td>
+                                <td><a class="btn btn-primary"
+                                        href="/update-donate-packages/<%= value.id %>">Atualizar</a></td>
+                                <td><a class="btn btn-warning" href="/list-donate-items/<%= value.id %>">Lista de
+                                        itens</a></td>
+                                <td><a class="btn btn-danger" href="/delete-donate-packages/<%= value.id %>">Deletar</a>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            <%- include('../../partials/pagination.ejs') %>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 grid-margin stretch-card donate-packages">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex flex-row justify-content-between border-bottom">
+                Adicionar pacote de doação
+            </div>
+            <div class="d-flex flex-row row px-4 justify-content-center my-2 bg-dark py-4 text-center">
+                <div class="justify-content-center text-center mx-auto">
+                    <form method="POST" action="/donate-packages">
+                        <div class="input-group my-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Nome do pacote</span>
+                            </div>
+                            <input class="form-control" name="name" type="text" placeholder="">
+                        </div>
+                        <div class="input-group my-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Valor em donate</span>
+                            </div>
+                            <input class="form-control" name="donate" type="number" placeholder="">
+                            <div class="mx-1"></div>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Valor de doação</span>
+                            </div>
+                            <input class="form-control" name="value" type="number" placeholder="">
+                            <div class="mx-1"></div>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Porcentagem</span>
+                            </div>
+                            <input class="form-control" name="percent" type="number" placeholder="">
+                        </div>
+                        <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                        <input type="hidden" name="action" value="validate_captcha">
+                        <div class="form-group mt-3 mb-1">
+                            <button type="submit" class="btn btn-primary">
+                                Criar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

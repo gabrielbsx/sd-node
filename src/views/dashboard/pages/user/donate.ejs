@@ -1,0 +1,43 @@
+<div class="col-md-8 grid-margin stretch-card donate">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex flex-row justify-content-between border-bottom">
+                Doação
+            </div>
+            <div class="d-flex flex-row justify-content-center my-2 text-center">
+                <table class="table table-hover table-striped table-dark">
+                    <thead>
+                        <tr>
+                            <th>Pacote</th>
+                            <th>Valor a doar</th>
+                            <th>Valor a receber s/ bônus</th>
+                            <th>Valor a receber c/ bônus</th>
+                            <th>Bônus</th>
+                            <th>Formas de pagamento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%= dump(data.rows) %>
+                        <% data.rows.forEach(async (value, key) => { %>
+                            <tr>
+                                <td><%= value.name %></td>
+                                <td class="currency"><%= value.value %></td>
+                                <td><%= value.donate %></td>
+                                <td><%= value.donate + (value.donate * value.percent) %></td>
+                                <td><%= value.percent %>%</td>
+                                <td>
+                                    <a class="btn btn-primary">
+                                        Picpay
+                                    </a>
+                                    <a class="btn btn-primary">
+                                        Mercadopago
+                                    </a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

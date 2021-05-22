@@ -1,0 +1,49 @@
+<div id="register">
+    <form id="register" action="/register" method="POST">
+        <div class="input-group mb-4">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="far fa-user"></i></span>
+            </div>
+            <input type="text" class="form-control" name="name" placeholder="Nome">
+        </div>
+        <div class="input-group mb-4">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="far fa-user"></i></span>
+            </div>
+            <input type="text" class="form-control" name="username" placeholder="Usuário">
+        </div>
+        <div class="input-group mb-4">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="far fa-envelope"></i></span>
+            </div>
+            <input type="text" class="form-control" name="email" placeholder="E-mail">
+        </div>
+        <div class="input-group mb-4">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="far fa-key"></i></span>
+            </div>
+            <input type="password" class="form-control" name="password" placeholder="Senha">
+        </div>
+        <div class="input-group mb-4">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="far fa-key"></i></span>
+            </div>
+            <input type="password" class="form-control" name="password_confirm" placeholder="Confirmar senha">
+        </div>
+        <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+        <input type="hidden" name="action" value="validate_captcha">
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary py-3 px-5">
+                Cadastrar
+            </button>
+        </div>
+    </form>
+    <div class="form-group text-center">
+        <a class="btn btn-success mx-1" href="/login">
+            Login
+        </a>
+        <a class="btn btn-danger mx-1" href="/recovery">
+            Recuperação de conta
+        </a>
+    </div>
+</div>

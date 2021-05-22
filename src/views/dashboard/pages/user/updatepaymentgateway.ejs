@@ -1,0 +1,40 @@
+<div class="col-md-12 grid-margin stretch-card update-payment-gateway">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex flex-row justify-content-between border-bottom">
+                Atualização de gateway de pagamento
+            </div>
+            <div class="d-flex flex-row row px-4 justify-content-center my-2 py-4 text-center update-payment-gateway">
+                <div class="row">
+                    <form method="POST" action="/update-payment-gateway">
+                        <div class="input-group my-1">
+                            <input class="form-control" type="hidden" name="id" value="<%= data.id %>">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Gateway:</span>
+                            </div>
+                            <input id="name" class="form-control" name="name" value="<%= data.name %>">
+                        </div>
+                        <div class="input-group my-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Key / Client ID:</span>
+                            </div>
+                            <input id="value" class="form-control" type="text" name="key" value="<%= data.key %>">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Token:</span>
+                            </div>
+                            <input id="donate" class="form-control" type="text" name="token" value="<%= data.token %>">
+                        </div>
+                        <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                        <input type="hidden" name="action" value="validate_captcha">
+                        <div class="form-group mb-3">
+                            <button type="submit" class="btn btn-primary">
+                                Alterar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
