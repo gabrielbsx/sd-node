@@ -57,14 +57,14 @@ exports.register = async (req, res, next) => {
                 message: 'Conta existente!',
             });
         }
-        return res.redirect('/register');
+        return res.redirect('/cadastrar');
     } catch (err) {
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect('/register');
+        return res.redirect('/cadastrar');
     }
-}
+};
 
 exports.login = async (req, res, next) => {
     try {
@@ -83,7 +83,7 @@ exports.login = async (req, res, next) => {
                     message: 'Login efetuado com sucesso!',
                 });*/
                 req.session.user = user;
-                return res.redirect('/home');
+                return res.redirect('/painel-de-controle');
             } else {
                 req.flash('error', {
                     message: 'Não foi possível efetuar o login!',
@@ -94,14 +94,14 @@ exports.login = async (req, res, next) => {
                 message: 'Não foi possível efetuar o login!',
             });
         }
-        return res.redirect('/login');
+        return res.redirect('/entrar');
     } catch (err) {
         req.flash('error', {
             message: err.details || 'Erro interno',
         });
-        return res.redirect('/login');
+        return res.redirect('/entrar');
     }
-}
+};
 
 exports.recovery = async (req, res, next) => {
     try {
@@ -114,12 +114,12 @@ exports.recovery = async (req, res, next) => {
         req.flash('success', {
             message: 'Um e-mail foi enviado para você, confirma para recuperar sua conta!',
         });
-        return res.redirect('/recovery');
+        return res.redirect('/recuperar-conta');
     } catch (err) {
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect('/recovery');
+        return res.redirect('/recuperar-conta');
     }
 };
 
@@ -129,8 +129,6 @@ exports.guildmark = async (req, res, next) => {
         const { guildmark } = req.files;
         await guildmarkSchema.validateAsync({ guildid: guildid }, { abortEarly: false, });
 
-
-        
         if (typeof guildmark !== 'undefined') {
             if (guildmark.mimetype === 'image/bmp') {
                 if (guildmark.encoding === '7bit') {
@@ -160,12 +158,12 @@ exports.guildmark = async (req, res, next) => {
                 message: 'Envie uma guildmark!',
             });
         }
-        return res.redirect('/guildmark');
+        return res.redirect('/painel-de-controle/guildmark');
     } catch (err) {
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect('/guildmark');
+        return res.redirect('/painel-de-controle/guildmark');
     }
 };
 
@@ -219,12 +217,12 @@ exports.changepassword = async (req, res, next) => {
                 message: 'Conta inexistente!',
             });
         }
-        return res.redirect('/change-password');
+        return res.redirect('/painel-de-controle/alterar-senha');
     } catch (err) {
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect('/change-password');
+        return res.redirect('/painel-de-controle/alterar-senha');
     }
 };
 
@@ -235,7 +233,7 @@ exports.recoverynumericpassword = async (req, res, next) => {
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect('/recovery-numeric-password');
+        return res.redirect('/painel-de-controle/recuperar-numerica');
     }
 };
 
@@ -259,12 +257,12 @@ exports.createdonatepackage = async (req, res, next) => {
                 message: 'Não foi possível adicionar pacote de doação!',
             });
         }
-        return res.redirect('/donate-packages');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     } catch (err) {
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect('/donate-packages');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     }
 };
 
@@ -300,13 +298,13 @@ exports.createdonateitem = async (req, res, next) => {
                 message: 'Pacote de doação inexistente!',
             });
         }
-        return res.redirect(`/list-donate-items/${id_package}`);
+        return res.redirect(`/painel-de-controle/lista-de-itens/${id_package}`);
     } catch (err) {
         const { id_package } = req.body;
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect(`/list-donate-items/${id_package}`);
+        return res.redirect(`/painel-de-controle/lista-de-itens/${id_package}`);
     }
 };
 
@@ -329,12 +327,12 @@ exports.updatedonatepackage = async (req, res, next) => {
                 message: 'Não foi possível atualizar o pacote de doação!',
             });
         }
-        return res.redirect('/donate-packages');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     } catch (err) {
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect('/donate-packages');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     }
 };
 
@@ -368,12 +366,12 @@ exports.updatedonateitems = async (req, res, next) => {
                 message: 'Pacote de doação inexistente!',
             });
         }
-        return res.redirect(`/list-donate-items/${id_package}`);
+        return res.redirect(`/painel-de-controle/lista-de-itens/${id_package}`);
     } catch (err) {
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect('/donate-packages');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     } 
 };
 
@@ -389,7 +387,7 @@ exports.deletedonateitem = async (req, res, next) => {
                 message: 'Não foi possível deletar a bonificação!',
             });
         }
-        return res.redirect('/donate-items');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     } catch (err) {
         req.flash('error', {
             message: 'Não foi possível deletar a bonificação!',
@@ -410,106 +408,11 @@ exports.deletedonatepackage = async (req, res, next) => {
                 message: 'Não foi possível deletar o pacote de doação!',
             });
         }
-        return res.redirect('/donate-packages');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     } catch (err) {
         req.flash('error', {
             message: 'Não foi possível deletar o pacote de doação!',
         });
-    }
-};
-
-exports.creategateway = async (req, res, next) => {
-    try {
-        const { name, key, token } = req.body;
-
-        if (name === 'Mercado Pago' || name === 'Picpay') {
-            if (typeof key !== 'undefined' && typeof token !== 'undefined') {
-                const exists = await paymentGatewayModel.findOne({
-                    where: {
-                        name: name,
-                    },
-                });
-                if (!exists) {
-                    const id = v4();
-                    const data = await paymentGatewayModel.create({
-                        id: id,
-                        name: name,
-                        key: key,
-                        token: token,
-                    });
-                    if (data) {
-                        req.flash('success', {
-                            message: 'Gateway adicionado com sucesso!',
-                        });
-                    } else {
-                        req.flash('error', {
-                            message: 'Não foi possível adicionar o gateway!',
-                        });
-                    }
-                } else {
-                    req.flash('error', {
-                        message: 'Gateway existente!',
-                    });
-                }
-            } else {
-                req.flash('error', {
-                    message: 'Requisição inválida!',
-                });
-            }
-        } else {
-            req.flash('error', {
-                message: 'Somente permitido: mercado pago ou picpay!',
-            });
-        }
-
-        return res.redirect('/payment-gateway');
-    } catch (err) {
-        console.log(err);
-        return res.redirect('/');
-    }
-};
-
-exports.updategateway = async (req, res, next) => {
-    try {
-        const { id } = req.params
-        const { name, key, token } = req.body;
-
-        if (name === 'Mercado Pago' || name === 'Picpay') {
-            if (typeof key !== 'undefined' && typeof token !== 'undefined') {
-                const data = await paymentGatewayModel.update({
-                    name: name,
-                    key: key,
-                    token: token,
-                 }, {
-                    where: {
-                        id: id,
-                    },
-                });
-
-                if (data) {
-                    req.flash('success', {
-                        message: 'Gateway atualizado com sucesso!',
-                    });
-                } else {
-                    req.flash('error', {
-                        message: 'Não foi possível atualizar o gateway',
-                    });
-                }
-            } else {
-                req.flash('error', {
-                    message: 'Requisição inválida!',
-                });
-            }
-        } else {
-            req.flash('error', {
-                message: 'Somente permitido: mercado pago ou picpay!',
-            });
-        }
-
-        return res.redirect('/payment-gateway');
-    } catch (err) {
-        console.log(err);
-        return res.redirect('/');
     }
 };
 
@@ -540,11 +443,10 @@ exports.picpay = async (req, res, next) => {
             });
         }
 
-        return res.render('/donate/picpay');
+        return res.render('/painel-de-doacao/picpay');
 
     } catch (err) {
-        console.log(err);
-        return res.redirect('/');
+        return res.redirect('/painel-de-controle');
     }
 };
 

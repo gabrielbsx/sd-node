@@ -1,0 +1,91 @@
+<div class="col-md-4 p-0 my-2">
+    <div class="col-md-12">
+        <div class="col-md-12 py-3 text-uppercase font-weight-bold bg-warning">
+            Painel de controle
+        </div>
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light px-5 py-4 justify-content-center text-center">
+            <% if (typeof user !== 'undefined') { %>
+                <div class="col-md-12 my-1">
+                    <a class="btn btn-primary w-100" href="/painel-de-controle/guildmark">
+                        Guildmark
+                    </a>
+                </div>
+                <div class="col-md-12 my-1">
+                    <a class="btn btn-primary w-100" href="/painel-de-controle/alterar-senha">
+                        Alterar senha
+                    </a>
+                </div>
+                <div class="col-md-12 my-1">
+                    <a class="btn btn-primary w-100" href="/painel-de-controle/suporte">
+                        Suporte
+                    </a>
+                </div>
+                <div class="col-md-12 my-1">
+                    <a class="btn btn-primary w-100" href="/painel-de-controle/doacoes">
+                        Doações
+                    </a>
+                </div>
+                <div class="col-md-12 my-1">
+                    <a class="btn btn-primary w-100" href="/painel-de-controle/sair">
+                        Sair
+                    </a>
+                </div>
+            <% } else { %>
+                <form method="post" action="/login">
+                    <div class="form-group justify-content-center my-2">
+                        <input class="form-control" type="text" name="username" placeholder="Usuário">
+                    </div>
+                    <div class="input-group justify-content-center my-2">
+                        <input class="form-control" type="password" name="password" placeholder="Senha">
+                    </div>
+                    <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                    <input type="hidden" name="action" value="validate_captcha">
+                    <div class="input-group justify-content-center my-2">
+                        <button class="btn btn-warning">
+                            Entrar
+                        </button>
+                    </div>
+                    <div class="input-group justify-content-center mt-4">
+                        <a class="btn btn-primary m-1" href="/cadastrar">
+                            Cadastrar
+                        </a>
+                        <a class="btn btn-danger m-1" href="/recuperar-conta">
+                            Recuperaçar Conta
+                        </a>
+                    </div>
+                </form>
+            <% } %>
+        </div>
+    </div>
+    <% if (typeof user !== 'undefined') { %>
+        <% if (user.access >= 3) { %>
+            <div class="col-md-12">
+                <div class="col-md-12 py-3 text-uppercase font-weight-bold bg-warning">
+                    Administração
+                </div>
+                <div style="background-color: rgba(0,0,0,0.5);" class="text-light px-5 py-4 justify-content-center text-center">
+                    <div class="col-md-12 my-1">
+                        <a class="btn btn-primary w-100" href="/painel-de-controle/noticias">
+                            Sistema de notícias
+                        </a>
+                    </div>
+                    <div class="col-md-12 my-1">
+                        <a class="btn btn-primary w-100" href="/painel-de-controle/guia-do-jogo">
+                            Sistema de guia do jogo
+                        </a>
+                    </div>
+                    <div class="col-md-12 my-1">
+                        <a class="btn btn-primary w-100" href="/painel-de-controle/pacote-de-doacoes">
+                            Sistema de doação
+                        </a>
+                    </div>
+                    <div class="col-md-12 my-1">
+                        <a class="btn btn-primary w-100" href="/painel-de-controle/sistema-de-pagamentos">
+                            Sistema de pagamentos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    <% } %>
+</div>

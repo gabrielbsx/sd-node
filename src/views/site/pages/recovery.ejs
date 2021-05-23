@@ -1,0 +1,29 @@
+<div class="col-md-8 p-0">
+    <div class="col-md-12 my-4">
+        <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
+            Painel de controle - recuperar conta
+        </div>
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4 px-5">
+            <form method="post" action="/recovery">
+                <div class="form-group justify-content-center my-2">
+                    <input class="form-control" type="email" name="email" placeholder="E-mail">
+                </div>
+                <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                <input type="hidden" name="action" value="validate_captcha">
+                <div class="input-group justify-content-center my-2">
+                    <button class="btn btn-warning">
+                        Recuperar
+                    </button>
+                </div>
+                <div class="input-group justify-content-center mt-4">
+                    <a class="btn btn-primary mx-1" href="/entrar">
+                        Entrar no painel de controle
+                    </a>
+                    <a class="btn btn-danger mx-1" href="/cadastrar">
+                        Quero me cadastrar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

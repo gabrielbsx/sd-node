@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <title>SPIRIT DESTINY</title>
+        <%- include('../partials/head.ejs') %>
+    </head>
+    <body>
+        <%- include('../partials/menu.ejs') %>
+        <div id="general">
+            <div class="wrapper">
+                <%- include('../partials/header.ejs') %>
+                <div class="inner content">
+                    <div class="row col-md-12">
+                        <%- include('../partials/slider.ejs') %>
+                        <%- include('../partials/messages.ejs') %>
+                        <%- include(`../pages/${page}.ejs`) %>
+                        <%- include('../partials/side.ejs') %>
+                    </div>
+                </div>
+                <%- include('../partials/footer.ejs') %>
+            </div>
+        </div>
+    </body>
+</html>

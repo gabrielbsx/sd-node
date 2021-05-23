@@ -1,7 +1,11 @@
 exports.error404 = (req, res, next) => {
-    return res.status(404).render('dashboard/pages/errors/404');
+    return res.render('site/layouts/portal', {
+        page: '404',
+    });
 };
 
 exports.error500 = (req, res, next) => {
-    return res.status(404).render('dashboard/pages/errors/500');
+    return res.render('site/layouts/portal', {
+        page: '500',
+    });
 };

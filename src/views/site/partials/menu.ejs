@@ -1,0 +1,47 @@
+<div class="menu">
+    <div class="wrapper">
+        <a class="navi-button" onclick="toggleNavi();"><span></span></a>
+        <ul class="navi">
+            <li>
+                <a href="/inicio">
+                    <span>HOME</span>
+                    <p>Página inicial</p>
+                </a>
+            </li>
+            <li>
+                <a class="about" href="/guia-do-jogo">
+                    <span>Guia do Jogo</span>
+                    <p>Sobre o jogo e tutoriais</p>
+                </a>
+            </li>
+            <li>
+                <a class="download" href="/ranking">
+                    <span>Ranking</span>
+                    <p>Ranking de Players e Guilds</p>
+                </a>
+            </li>
+            <li>
+                <a class="forum" href="/painel-de-controle/suporte">
+                    <span>Suporte</span>
+                    <p>Tickets e FAQs</p>
+                </a>
+            </li>
+            <li>
+                <a href="/painel-de-controle/doacoes">
+                    <span>Doação</span>
+                    <p>Fazer doações</p>
+                </a>
+            </li>
+            <li>
+                <% if (typeof user !== 'undefined') { %>
+                    <a class="account" href="/painel-de-controle">
+                <% } else { %>
+                    <a class="account" href="/entrar">
+                <% } %>
+                    <span>Painel de Controle</span>
+                    <p>Painel de controle do jogador</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

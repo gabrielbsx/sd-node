@@ -2,43 +2,76 @@ const donatepackagesModel = require('../models/donatepackages-model');
 const donateitemsModel = require('../models/donateitems-model');
 const paymentGatewayModel = require('../models/paymentgateway-model');
 
-exports.home = async (req, res, next) => {
+exports.index = async (req, res, next) => {
     try {
-        return res.status(200).render('dashboard/pages/home', {
-            layout: 'home',
+        return res.render('site/layouts/dashboard', {
+            page: 'home',
         });
     } catch (err) {
-        return res.status(500).render('dashboard/pages/errors/500');
+        return res.render('site/layouts/main', {
+            page: '500',
+        });
     } 
 };
 
 exports.guildmark = async (req, res, next) => {
     try {
-        return res.status(200).render('dashboard/pages/home', {
-            layout: 'guildmark',
+        return res.render('site/layouts/dashboard', {
+            page: 'guildmark',
         });
     } catch (err) {
-        return res.status(500).render('dashboard/pages/errors/500');
+        return res.render('site/layouts/main', {
+            page: '500',
+        });
+    }
+};
+
+exports.support = async (req, res, next) => {
+    try {
+        return res.render('site/layouts/dashboard', {
+            page: 'support',
+        });
+    } catch (err) {
+        return res.render('site/layouts/main', {
+            page: '500',
+        });
     }
 };
 
 exports.changepassword = async (req, res, next) => {
     try {
-        return res.status(200).render('dashboard/pages/home', {
-            layout: 'changepassword',
+        return res.render('site/layouts/dashboard', {
+            page: 'changepassword',
         });
     } catch (err) {
-        return res.status(500).render('dashboard/pages/errors/500');
+        return res.render('site/layouts/main', {
+            page: '500',
+        });
     }
 };
 
 exports.recoverynumericpassword = async (req, res, next) => {
     try {
-        return res.status(200).render('dashboard/pages/home', {
-            layout: 'recoverynumericpassword',
+        return res.render('site/layouts/dashboard', {
+            page: 'recoverynumericpassword',
         });
     } catch (err) {
-        return res.status(500).render('dashboard/pages/errors/500');
+        return res.render('site/layouts/main', {
+            page: '500',
+        });
+    }
+};
+
+exports.news = async (req, res, next) => {
+    try {
+        
+        return res.render('site/layouts/news', {
+            page: 'news',
+        });
+    } catch (err) {
+        return res.render('site/layouts/main', {
+            page: '500',
+        });
     }
 };
 
@@ -56,43 +89,14 @@ exports.donate = async (req, res, next) => {
                 model: donateitemsModel,
             }],
         });
-        return res.status(200).render('dashboard/pages/home', {
-            layout: 'donate',
+        return res.render('site/layouts/dashboard', {
+            page: 'donate',
             data: donate,
         });
     } catch (err) {
-        console.log(err);
-        return res.status(500).render('dashboard/pages/errors/500');
-    }
-};
-
-exports.donaterules = async (req, res, next) => {
-    try {
-        return res.status(200).render('dashboard/pages/home', {
-            layout: 'donaterules',
+        return res.render('site/layouts/main', {
+            page: '500',
         });
-    } catch (err) {
-        return res.status(500).render('dashboard/pages/errors/500');
-    }
-};
-
-exports.rankingplayers = async (req, res, next) => {
-    try {
-        return res.status(200).render('dashboard/pages/home', {
-            layout: 'rankingplayers',
-        });
-    } catch (err) {
-        return res.status(500).render('dashboard/pages/errors/500');
-    }
-};
-
-exports.rankingcities = async (req, res, next) => {
-    try {
-        return res.status(200).render('dashboard/pages/home', {
-            layout: 'rankingcities',
-        });
-    } catch (err) {
-        return res.status(500).render('dashboard/pages/errors/500');
     }
 };
 
@@ -105,8 +109,8 @@ exports.donatepackages = async (req, res, next) => {
                     id: id,
                 },
             });
-            return res.render('dashboard/pages/home', {
-                layout: 'donatepackages',
+            return res.render('site/layouts/dashboard', {
+                page: 'donatepackages',
                 data: data,
             });
         }
@@ -119,16 +123,15 @@ exports.donatepackages = async (req, res, next) => {
             limit: 5,
             offset: (page - 1) * 5 || 0,
         });
-        return res.render('dashboard/pages/home', {
-            layout: 'donatepackages',
+        return res.render('site/layouts/dashboard', {
+            page: 'donatepackages',
             data: data,
         });
     } catch (err) {
-        console.log(err);
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect('/donate-packages');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     }
 };
 
@@ -141,8 +144,8 @@ exports.donateitems = async (req, res, next) => {
                     id: id,
                 },
             });
-            return res.render('dashboard/pages/home', {
-                layout: 'donateitems',
+            return res.render('site/layouts/dashboard', {
+                page: 'donateitems',
                 data: data,
             });
         }
@@ -156,8 +159,8 @@ exports.donateitems = async (req, res, next) => {
             offset: (page - 1) * 5 || 0,
         });
         const packages = await donatepackagesModel.findAll();
-        return res.render('dashboard/pages/home', {
-            layout: 'donateitems',
+        return res.render('site/layouts/dashboard', {
+            page: 'donateitems',
             data: data,
             packages: packages,
         });
@@ -165,7 +168,7 @@ exports.donateitems = async (req, res, next) => {
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect('/donate-items');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     }
 };
 
@@ -174,8 +177,8 @@ exports.changedonatepackage = async (req, res, next) => {
         const { id } = req.params;
         const packages = await donatepackagesModel.findOne({ where: { id: id, } });
         if (packages) {
-            return res.render('dashboard/pages/home', {
-                layout: 'updatedonatepackages',
+            return res.render('site/layouts/dashboard', {
+                page: 'updatedonatepackages',
                 data: packages,
             });
         } else {
@@ -183,12 +186,12 @@ exports.changedonatepackage = async (req, res, next) => {
                 message: 'Não foi possível encontrar o pacote de doação!',
             });
         }
-        return res.redirect('/donate-packages');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     } catch (err) {
         req.flash('error', {
             message: 'Não foi possível encontrar o pacote de doação!',
         });
-        return res.redirect('/donate-packages');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     }
 };
 
@@ -208,8 +211,8 @@ exports.listdonateitems = async (req, res, next) => {
             offset: (page - 1) * 5 || 0,
         });
         if (items) {
-            return res.render('dashboard/pages/home', {
-                layout: 'listdonateitems',
+            return res.render('site/layouts/dashboard', {
+                page: 'listdonateitems',
                 data: items,
                 id_package: id,
             });
@@ -218,12 +221,12 @@ exports.listdonateitems = async (req, res, next) => {
                 message: 'Não foi possível encontrar o pacote de doação!',
             });
         }
-        return res.redirect('/donate-packages');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     } catch (err) {
         req.flash('error', {
             message: 'Não foi possível encontrar o pacote de doação!',
         });
-        return res.redirect('/donate-packages');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     }
 };
 
@@ -237,8 +240,8 @@ exports.changedonateitem = async (req, res, next) => {
         });
         const packages = await donatepackagesModel.findAll();
         if (item) {
-            return res.render('dashboard/pages/home', {
-                layout: 'updatedonateitems',
+            return res.render('site/layouts/dashboard', {
+                page: 'updatedonateitems',
                 data: item,
                 packages: packages,
             });
@@ -247,12 +250,12 @@ exports.changedonateitem = async (req, res, next) => {
                 message: 'Não foi possível encontrar a bonificação!',
             });
         }
-        return res.redirect('/donate-items');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     } catch (err) {
         req.flash('error', {
             message: 'Não foi possível encontrar a bonificação!',
         });
-        return res.redirect('/donate-items');
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
     }
 };
 
@@ -260,13 +263,12 @@ exports.paymentgateway = async (req, res, next) => {
     try {
         const gateways = await paymentGatewayModel.findAll();
 
-        return res.render('dashboard/pages/home', {
-            layout: 'paymentgateway',
+        return res.render('site/layouts/dashboard', {
+            page: 'paymentgateway',
             data: gateways,
         });
     } catch (err) {
-        console.log(err);
-        return res.redirect('/');
+        return res.redirect('/painel-de-controle');
     }
 };
 
@@ -281,8 +283,8 @@ exports.updatepaymentgateway = async (req, res, next) => {
         });
 
         if (data) {
-            return res.render('dashboard/pages/home', {
-                layout: 'updatepaymentgateway',
+            return res.render('site/layouts/dashboard', {
+                page: 'updatepaymentgateway',
                 data: data,
             });
         } else {
@@ -290,9 +292,20 @@ exports.updatepaymentgateway = async (req, res, next) => {
                 message: 'Não foi possível encontrar o gateway de pagamento!',
             });
         }
-        return res.redirect('/payment-gateway');
+        return res.redirect('/painel-de-controle');
     } catch (err) {
-        console.log(err);
         return res.redirect('/');
     }
-}
+};
+
+exports.logout = async (req, res, next) => {
+    try {
+        delete req.session.user;
+        req.flash('success', {
+            message: 'Deslogado com sucesso!',
+        });
+        return res.redirect('/');
+    } catch (err) {
+        return res.redirect('/');
+    }
+};

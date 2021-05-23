@@ -1,0 +1,83 @@
+<div class="inner footer">
+    <div class="flex">
+        <a href="/" class="logo">
+            <img src="/public/template/images/logo-min.png" alt="">
+        </a>
+        <div class="list">
+            <div class="ul">
+                <div class="title">MENU</div>
+                <ul data-list="list-1">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/ranking">Ranking</a>
+                    </li>
+                    <li>
+                        <a href="/guia-do-jogo">Guia do Jogo</a>
+                    </li>
+                    <li>
+                        <a href="/tickets">Suporte</a>
+                    </li>
+                    <li>
+                        <a href="/donate">Doação</a>
+                    </li>
+                    <li>
+                        <a href="/painel-de-controle">Painel de Controle</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="ul">
+                <div class="title">Suporte</div>
+                <ul>
+                    <li>
+                        <a href="/faqs">FAQs</a>
+                    </li>
+                    <li>
+                        <a href="/tickets">Tickets</a>
+                    </li>
+                    <li>
+                        <a href="https://discord.gg/sAezuTKTtS" target="_blank">Canal Discord 24/7</a>
+                    </li>
+                    <li>
+                        <a href="/regras">Regras</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="info">
+            <div class="desc">© 2021 Spirit Destiny <a href="/">spirit-destiny.com</a></div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+<script src="https://momentjs.com/downloads/moment.min.js"></script>
+<script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
+<script>
+    moment.locale('pt-br');
+    $('.message').delay(1 * 60 * 60).hide('slow');
+    
+    async function setrecaptcha() {
+        grecaptcha.ready(function () {
+            grecaptcha.execute("<%= recaptcha_site %>", {
+                action: "validate_recaptcha"
+            }).then(function (token) {
+                console.log(token);
+                if ($(".g-recaptcha-response").length) {
+                    $.each($(".g-recaptcha-response"), (index, value) => {
+                        value.value = token;
+                    });
+                }
+            });
+        });
+    }
+
+    async function getcurrency(number) {
+        $('.currency');
+        new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(number);
+    }
+
+    $(document).ready(async () => {
+        await setrecaptcha();
+    });
+</script>

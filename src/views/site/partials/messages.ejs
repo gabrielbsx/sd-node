@@ -1,0 +1,31 @@
+<% const messages = getMessages() %>
+<div class="row col-md-12 p-0 m-0">
+    <% if (messages.success) { %>
+        <% messages.success.forEach(message => { %>
+            <div class="card-body text-center">
+                <div class="alert alert-success">
+                    <%= message.message %>
+                </div>
+            </div>
+        <% }); %>
+    <% } %>
+    <% if (messages.error) { %>
+        <% messages.error.forEach(message => { %>
+            <% if (typeof message.message === 'string') { %>
+                <div class="card-body text-center">
+                    <div class="alert alert-danger">
+                        <%= message.message %>
+                    </div>
+                </div>
+            <% } else if (typeof message.message === 'object') { %>
+                <% message.message.forEach((msg) => { %>
+                    <div class="card-body text-center">
+                        <div class="alert alert-danger">
+                            <%= msg.message %>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } %>
+        <% }) %>
+    <% } %>
+</div>
