@@ -4,6 +4,10 @@ module.exports = Joi.object().keys({
     name: Joi.string()
         .max(255)
         .required()
+        .alter({
+            createpackage: (schema) => schema.required(),
+            updatepackage: (schema) => schema.required(),
+        })
         .messages({
             'string.base': 'Nome inválido!',
             'string.empty': 'Nome do pacote não pode ser vázio!',
@@ -11,10 +15,30 @@ module.exports = Joi.object().keys({
             'string.required': 'Nome do pacote obrigatório!',
         }),
 
+    slug: Joi.string()
+        .min(3)
+        .max(100)
+        .pattern(new RegExp(/^[a-z0-9](-?[a-z0-9])*$/))
+        .alter({
+            createpackage: (schema) => schema.required(),
+            updatepackage: (schema) => schema.required(),
+        })
+        .messages({
+            'string.pattern': 'Slug inválido!',
+            'string.min': 'Slug deve conter no mínimo 3 caracteres!',
+            'string.max': 'Slug deve conter no máximo 100 caracteres!',
+            'string.empty': 'Slug não deve estar vázio!',
+            'string.required': 'Slug obrigatório!',
+        }),
+
     percent: Joi.number()
         .integer()
         .min(0)
         .required()
+        .alter({
+            createpackage: (schema) => schema.required(),
+            updatepackage: (schema) => schema.required(),
+        })
         .messages({
             'number.base': 'Porcentagem inválida!',
             'number.integer': 'Porcentagem inválida!',
@@ -25,6 +49,10 @@ module.exports = Joi.object().keys({
     value: Joi.number()
         .min(0)
         .required()
+        .alter({
+            createpackage: (schema) => schema.required(),
+            updatepackage: (schema) => schema.required(),
+        })
         .messages({
             'number.base': 'Valor do pacote deve conter apenas números!',
             'number.min': 'Valor do pacote inválido!',
@@ -35,6 +63,10 @@ module.exports = Joi.object().keys({
         .integer()
         .min(0)
         .required()
+        .alter({
+            createpackage: (schema) => schema.required(),
+            updatepackage: (schema) => schema.required(),
+        })
         .messages({
             'number.base': 'Valor de doação do pacote deve conter apenas números inteiros!',
             'number.integer': 'Valor de doação do pacote deve ser apenas números inteiros!',

@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return await queryInterface.createTable('donate_packages', {
+    return await queryInterface.createTable('guides', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -10,9 +10,8 @@ module.exports = {
         unique: true,
         primaryKey: true,
       },
-      name: {
+      title: {
         type: Sequelize.STRING(100),
-        unique: true,
         allowNull: false,
       },
       slug: {
@@ -20,16 +19,12 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      percent: {
-        type: Sequelize.INTEGER.UNSIGNED,
+      content: {
+        type: Sequelize.TEXT,
         allowNull: false,
       },
-      value: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
-      },
-      donate: {
-        type: Sequelize.INTEGER.UNSIGNED,
+      id_user: {
+        type: Sequelize.UUID,
         allowNull: false,
       },
       created_at: {
@@ -44,6 +39,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return await queryInterface.dropTable('donate_packages');
+    return await queryInterface.dropTable('guides');
   }
 };

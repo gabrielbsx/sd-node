@@ -5,6 +5,7 @@ class DonatePackages extends Model {
   static init(sequelize) {
     super.init({
         name: DataTypes.STRING(100),
+        slug: DataTypes.STRING(100),
         percent: DataTypes.INTEGER.UNSIGNED,
         value: DataTypes.INTEGER.UNSIGNED,
         donate: DataTypes.INTEGER.UNSIGNED,

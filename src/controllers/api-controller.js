@@ -4,10 +4,15 @@ const userSchema =  require('../schemas/users-schema');
 const guildmarkSchema = require('../schemas/guildmark-schema');
 const donatepackageSchema = require('../schemas/donatepackage-schema');
 const donateitemsSchema = require('../schemas/donateitems-schema');
+const newsSchema = require('../schemas/news-schema');
+const guidesSchema = require('../schemas/guides-schema');
 const userModel = require('../models/users-model');
+const newsModel = require('../models/news-model');
 const donatepackagesModel = require('../models/donatepackages-model');
 const donateitemsModel = require('../models/donateitems-model');
 const paymentGatewayModel = require('../models/paymentgateway-model');
+const guidesModel = require('../models/guides-model');
+const guideArticlesModel = require('../models/guidearticles-model');
 const Users = require('../models/users-model');
 const Game = new (require('../helpers/game'))();
 const bcrypt = require("bcryptjs");
@@ -24,7 +29,12 @@ exports.register = async (req, res, next) => {
             password_confirm: password_confirm,
             email: email,
         };
-        await userSchema.tailor('register').validateAsync(user, { abortEarly: false, });
+        await userSchema
+            .tailor('register')
+            .validateAsync(user, { abortEarly: false, });
+
+        const response = await axios.get(`${process.env.GAME_API}/account/${username}`);
+
         if (await Game.userExists(username) === false) {
             delete user.password_confirm;
             user.id = v4();
@@ -79,9 +89,9 @@ exports.login = async (req, res, next) => {
         if (user) {
             if (await bcrypt.compare(password, user.password)) {
                 delete user.password;
-                /*req.flash('success', {
+                req.flash('success', {
                     message: 'Login efetuado com sucesso!',
-                });*/
+                });
                 req.session.user = user;
                 return res.redirect('/painel-de-controle');
             } else {
@@ -96,6 +106,7 @@ exports.login = async (req, res, next) => {
         }
         return res.redirect('/entrar');
     } catch (err) {
+        console.log(err);
         req.flash('error', {
             message: err.details || 'Erro interno',
         });
@@ -127,9 +138,11 @@ exports.guildmark = async (req, res, next) => {
     try {
         const { guildid } = req.body;
         const { guildmark } = req.files;
-        await guildmarkSchema.validateAsync({ guildid: guildid }, { abortEarly: false, });
+        await guildmarkSchema
+            .validateAsync({ guildid: guildid }, { abortEarly: false, });
 
         if (typeof guildmark !== 'undefined') {
+            //API FLASK PYTHON [get guildid/name]
             if (guildmark.mimetype === 'image/bmp') {
                 if (guildmark.encoding === '7bit') {
                     if (guildmark.size <= 100000) {
@@ -197,7 +210,8 @@ exports.changepassword = async (req, res, next) => {
                             message: 'Senha alterada com sucesso!',
                         });
                     } else {
-                        await Game.changePassword(username, oldpassword);
+                        
+                        //await Game.changePassword(username, oldpassword); API FLASK PYTHON
                         req.flash('error', {
                             message: 'Não foi possível alterar a senha!',
                         });
@@ -237,185 +251,6 @@ exports.recoverynumericpassword = async (req, res, next) => {
     }
 };
 
-exports.createdonatepackage = async (req, res, next) => {
-    try {
-        const { name, value, donate, percent } = req.body;
-        var donatepackage = {
-            name: name,
-            value: value,
-            donate: donate,
-            percent: percent,
-        };
-        await donatepackageSchema.validateAsync(donatepackage, { abortEarly: false, });
-        donatepackage.id = v4();
-        if (await donatepackagesModel.create(donatepackage)) {
-            req.flash('success', {
-                message: 'Pacote de doação criado com sucesso!',
-            });
-        } else {
-            req.flash('error', {
-                message: 'Não foi possível adicionar pacote de doação!',
-            });
-        }
-        return res.redirect('/painel-de-controle/pacotes-de-doacao');
-    } catch (err) {
-        req.flash('error', {
-            message: err.details || 'Erro interno!',
-        });
-        return res.redirect('/painel-de-controle/pacotes-de-doacao');
-    }
-};
-
-exports.createdonateitem = async (req, res, next) => {
-    try {
-        const { id_package, itemname, item_id, eff1, eff2, eff3, effv1, effv2, effv3 } = req.body;
-        var donateitems = {
-            id_package: id_package,
-            itemname: itemname,
-            item_id: item_id,
-            eff1: eff1,
-            eff2: eff2,
-            eff3: eff3,
-            effv1: effv1,
-            effv2: effv2,
-            effv3: effv3,
-        };
-        
-        await donateitemsSchema.validateAsync(donateitems, { abortEarly: false, });
-        if (await donatepackagesModel.findOne({ where: { id: id_package } })) {
-            donateitems.id = v4();
-            if (await donateitemsModel.create(donateitems)) {
-                req.flash('success', {
-                    message: 'Bonificação criada com sucesso!',
-                });
-            } else {
-                req.flash('error', {
-                    message: 'Não foi possível criar a bonificação!',
-                });
-            }
-        } else {
-            req.flash('error', {
-                message: 'Pacote de doação inexistente!',
-            });
-        }
-        return res.redirect(`/painel-de-controle/lista-de-itens/${id_package}`);
-    } catch (err) {
-        const { id_package } = req.body;
-        req.flash('error', {
-            message: err.details || 'Erro interno!',
-        });
-        return res.redirect(`/painel-de-controle/lista-de-itens/${id_package}`);
-    }
-};
-
-exports.updatedonatepackage = async (req, res, next) => {
-    try {
-        const { id, name, value, donate, percent } = req.body;
-        var donatepackage = {
-            name: name,
-            value: value,
-            donate: donate,
-            percent: percent,
-        };
-        await donatepackageSchema.validateAsync(donatepackage, { abortEarly: false, });
-        if (await donatepackagesModel.update(donatepackage, { where: { id: id }})) {
-            req.flash('success', {
-                message: 'Pacote de doação atualizado com sucesso!',
-            });
-        } else {
-            req.flash('error', {
-                message: 'Não foi possível atualizar o pacote de doação!',
-            });
-        }
-        return res.redirect('/painel-de-controle/pacotes-de-doacao');
-    } catch (err) {
-        req.flash('error', {
-            message: err.details || 'Erro interno!',
-        });
-        return res.redirect('/painel-de-controle/pacotes-de-doacao');
-    }
-};
-
-exports.updatedonateitems = async (req, res, next) => {
-    try {
-        const { id, id_package, itemname, item_id, eff1, eff2, eff3, effv1, effv2, effv3 } = req.body;
-        var donateitems = {
-            id_package: id_package,
-            itemname: itemname,
-            item_id: item_id,
-            eff1: eff1,
-            eff2: eff2,
-            eff3: eff3,
-            effv1: effv1,
-            effv2: effv2,
-            effv3: effv3,
-        };
-        await donateitemsSchema.validateAsync(donateitems, { abortEarly: false, });
-        if (await donatepackagesModel.findOne({ where: { id: id_package }})) {
-            if (await donateitemsModel.update(donateitems, { where: { id: id }})) {
-                req.flash('success', {
-                    message: 'Bonificação atualizada com sucesso!',
-                });
-            } else {
-                req.flash('error', {
-                    message: 'Não foi possível atualizar a bonificação!',
-                });
-            }
-        } else {
-            req.flash('error', {
-                message: 'Pacote de doação inexistente!',
-            });
-        }
-        return res.redirect(`/painel-de-controle/lista-de-itens/${id_package}`);
-    } catch (err) {
-        req.flash('error', {
-            message: err.details || 'Erro interno!',
-        });
-        return res.redirect('/painel-de-controle/pacotes-de-doacao');
-    } 
-};
-
-exports.deletedonateitem = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        if (await donateitemsModel.destroy({ where: { id: id, }})) {
-            req.flash('success', {
-                message: 'Bonificação deletada com sucesso!',
-            });
-        } else {
-            req.flash('error', {
-                message: 'Não foi possível deletar a bonificação!',
-            });
-        }
-        return res.redirect('/painel-de-controle/pacotes-de-doacao');
-    } catch (err) {
-        req.flash('error', {
-            message: 'Não foi possível deletar a bonificação!',
-        });
-    }
-};
-
-exports.deletedonatepackage = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        if (await donatepackagesModel.destroy({ where: { id: id, }})) {
-            await donateitemsModel.destroy({ where: { id_package: id, }});
-            req.flash('success', {
-                message: 'Pacote de doação deletada com sucesso!',
-            });
-        } else {
-            req.flash('error', {
-                message: 'Não foi possível deletar o pacote de doação!',
-            });
-        }
-        return res.redirect('/painel-de-controle/pacotes-de-doacao');
-    } catch (err) {
-        req.flash('error', {
-            message: 'Não foi possível deletar o pacote de doação!',
-        });
-    }
-};
-
 exports.picpay = async (req, res, next) => {
     try {
         const { key, token } = await paymentGatewayModel.findOne({
@@ -450,10 +285,329 @@ exports.picpay = async (req, res, next) => {
     }
 };
 
+exports.createnews = async (req, res, next) => {
+    try {
+        const {
+            title,
+            slug,
+            content,
+            category
+        } = req.body;
+
+        await newsSchema
+            .tailor('createnews')
+            .validateAsync({
+                title: title,
+                slug: slug,
+                content: content,
+                category: category,
+            });
+
+        const slugExists = await newsModel.findOne({
+            where: {
+                slug: slug,
+            },
+        });
+
+        if (!slugExists) {
+            const id = v4();
+
+            const news = await newsModel.create({
+                id: id,
+                title: title,
+                slug: slug,
+                content: content,
+                category: category,
+                id_user: req.session.user.id,
+            });
+    
+            if (news) {
+                req.flash('success', {
+                    message: 'Notícia criada com sucesso!',
+                });
+            } else {
+                req.flash('error', {
+                    message: 'Não foi possível criar uma notícia!',
+                });
+            }
+        } else {
+            req.flash('error', {
+                message: 'Slug existente!',
+            });
+        }
+
+        return res.redirect('/painel-de-controle/criar-noticia')
+    } catch (err) {
+        req.flash('error', {
+            message: err.details || 'Erro interno!',
+        });
+        return res.redirect('/painel-de-controle/criar-noticia');
+    }
+};
+
+exports.updatenews = async (req, res, next) => {
+    try {
+        var { slug } = req.params;
+        const {
+            title,
+            content,
+            category,
+        } = req.body;
+
+        const nSlug = req.body.slug;
+
+        await newsSchema
+            .tailor('updatenews')
+            .validateAsync({
+                title: title,
+                slug: nSlug,
+                slug: slug,
+                content: content,
+                category: category,
+            });
+
+        const news = await newsModel.findOne({
+            where: {
+                slug: slug,
+            },
+        });
+
+        if (news) {
+            const data = await newsModel.update({
+                title: title,
+                slug: nSlug,
+                content: content,
+                category: category,
+            }, {
+                where: {
+                    slug: slug,
+                },
+            });
+            if (data) {
+                req.flash('success', {
+                    message: 'Notícia alterada com sucesso!',
+                });
+                slug = nSlug;
+            } else {
+                req.flash('error', {
+                    message: 'Não foi possível alterar a notícia',
+                });
+            }
+            return res.redirect(`/painel-de-controle/editar-noticia/${slug}`);
+        } else {
+            req.flash('error', {
+                message: 'Notícia inexistente!',
+            });
+            return res.redirect('/painel-de-controle/noticias');
+        }
+    } catch (err) {
+        req.flash('error', {
+            message: err.details || 'Erro interno!',
+        });
+        return res.redirect('/painel-de-controle/noticias');
+    }
+};
+
 exports.mercadopago = async (req, res, next) => {
     try {
-        
+        req.flash('error', {
+            message: err.details || 'Erro interno!',
+        });
+        return res.redirect('/painel-de-controle/noticias');
     } catch (err) {
         return res.redirect('/');
+    }
+};
+
+exports.createguide = async (req, res, next) => {
+    try { 
+        const {
+            title,
+            slug,
+            content,
+        } = req.body;
+
+        const id = v4();
+
+        await guidesSchema
+            .tailor('createguide')
+            .validateAsync({
+                title: title,
+                slug: slug,
+                content: content,
+            });
+
+        const slugExists = await guidesModel.findOne({
+            where: {
+                slug: slug,
+            },
+        });
+
+        if (!slugExists) {
+            const guide = await guidesModel.create({
+                title: title,
+                slug: slug,
+                content: content,
+            });
+            
+            if (guide) {
+                req.flash('success', {
+                    message: 'Guia criada com sucesso!',
+                });
+            } else {
+                req.flash('error', {
+                    message: 'Naõ foi possível criar uma guia!',
+                });
+            }
+        } else {
+            req.flash('error', {
+                message: 'Slug existente!',
+            });
+        }
+
+        return res.redirect('/painel-de-controle/guia-do-jogo');
+    } catch (err) {
+        req.flash('error', {
+            message: err.details || 'Erro interno!',
+        });
+        return res.redirect('/painel-de-controle/criar-guia-do-jogo');
+    }
+};
+
+exports.updateguide = async (req, res, next) => {
+    try {
+        var { slug } = req.params;
+        const {
+            title,
+            content,
+        } = req.body;
+
+        const nSlug = req.body.slug;
+
+        await guidesSchema
+            .tailor('updateguide')
+            .validateAsync({
+                title: title,
+                slug: nSlug,
+                slug: slug,
+                content: content,
+            });
+
+        const news = await guidesModel.findOne({
+            where: {
+                slug: slug,
+            },
+        });
+
+        if (news) {
+            const data = await guidesModel.update({
+                title: title,
+                slug: nSlug,
+                content: content,
+            }, {
+                where: {
+                    slug: slug,
+                },
+            });
+            if (data) {
+                req.flash('success', {
+                    message: 'Guia alterada com sucesso!',
+                });
+                slug = nSlug;
+            } else {
+                req.flash('error', {
+                    message: 'Não foi possível alterar a guia',
+                });
+            }
+            return res.redirect(`/painel-de-controle/editar-guia-do-jogo/${slug}`);
+        } else {
+            req.flash('error', {
+                message: 'Guia do jogo inexistente!',
+            });
+            return res.redirect('/painel-de-controle/guia-do-jogo');
+        }
+    } catch (err) {
+        req.flash('error', {
+            message: err.details || 'Erro interno!',
+        });
+        return res.redirect('/painel-de-controle/guia-do-jogo');
+    }
+};
+
+exports.createdonateitems = async (req, res, next) => {
+    try {
+        const {
+            id_package,
+            itemname,
+            slug,
+            item_id,
+            eff1,
+            effv1,
+            eff2,
+            effv2,
+            eff3,
+            effv3,
+        } = req.body;
+
+        await donateitemsSchema
+            .tailor('createitem')
+            .validateAsync({
+                id_package: id_package,
+                itemname: itemname,
+                slug: slug,
+                item_id: item_id,
+                eff1: eff1,
+                effv1: effv1,
+                eff2: eff2,
+                effv2: effv2,
+                eff3: eff3,
+                effv3: effv3,
+            });
+
+        const id = v4();
+
+        const slugExists = await donateitemsModel.findOne({
+            where: {
+                slug: slug,
+            },
+        });
+
+        if (!slugExists) {
+            const donateitems = await donateitemsModel.create({
+                id: id,
+                id_package: id_package,
+                itemname: itemname,
+                slug: slug,
+                item_id: item_id,
+                eff1: eff1,
+                effv1: effv1,
+                eff2: eff2,
+                effv2: effv2,
+                eff3: eff3,
+                effv3: effv3,
+            });
+    
+            if (donateitems) {
+                req.flash('success', {
+                    message: 'Item de doação criado com sucesso!',
+                });
+            } else {
+                req.flash('error', {
+                    message: 'Não foi possível criar o item de doação!',
+                });
+            }
+    
+        } else {
+            req.flash('error', {
+                message: 'Slug existente!',
+            });
+        }
+        
+        return res.redirect('/painel-de-controle/pacote-de-doacoes');
+    } catch (err) {
+        req.flash('error', {
+            message: err.details || 'Erro interno!',
+        });
+        return res.redirect('/painel-de-controle/itens-de-doacoes');
     }
 };

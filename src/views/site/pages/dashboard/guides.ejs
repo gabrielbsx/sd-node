@@ -1,0 +1,42 @@
+<div class="col-md-8 p-0 m-0">
+    <div class="col-md-12 my-2">
+        <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
+            Painel de controle - guia do jogo
+        </div>
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4">
+            <div class="col-md-12 my-1">
+                <a href="/painel-de-controle/criar-guia-do-jogo" class="btn btn-primary py-2">Criar guia</a>
+            </div>
+            <% if (data.count > 0) { %>
+                <table class="table table-dark table-hover">
+                    <head>
+                        <tr>
+                            <th>Titulo</th>
+                            <th>Data</th>
+                            <th colspan="2">Ações</th>
+                        </tr>
+                    </head>
+                    <tbody>
+                        <% for (let i = 0; i < data.count; i++) { %>
+                            <tr>
+                                <td><%= data.rows[i].title %></td>
+                                <td class="time-ago"><%= data.rows[i].createdAt %></td>
+                                <td>
+                                    <a class="btn btn-warning" href="/painel-de-controle/editar-guia-do-jogo/<%= data.rows[i].slug %>">
+                                        Editar
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger" href="/painel-de-controle/editar-guia-do-jogo/<%= data.rows[i].slug %>">
+                                        Deletar
+                                    </a>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <%- include('../../partials/pagination.ejs') %>
+            <% } %>
+        </div>
+    </div>
+</div>

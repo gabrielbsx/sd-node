@@ -1,0 +1,33 @@
+<div class="col-md-8 p-0 m-0">
+    <div class="col-md-12 my-2">
+        <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
+            Painel de controle - criar pacote de doações
+        </div>
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4 px-5">
+            <form method="post" action="/painel-de-controle/criar-pacote-de-doacoes">
+                <div class="form-group">
+                    <input name="name" type="text" class="form-control" placeholder="Nome">
+                </div>
+                <div class="form-group">
+                    <input name="slug" type="text" class="form-control" placeholder="Slug">
+                </div>
+                <div class="form-group">
+                    <input name="value" type="text" class="form-control" placeholder="Valor">
+                </div>
+                <div class="form-group">
+                    <input name="donate" type="text" class="form-control" placeholder="Cash">
+                </div>
+                <div class="form-group">
+                    <input name="percent" type="text" class="form-control" placeholder="Porcentagem">
+                </div>
+                <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                <input type="hidden" name="action" value="validate_captcha">
+                <div class="form-group">
+                    <button class="btn btn-primary">
+                        Criar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

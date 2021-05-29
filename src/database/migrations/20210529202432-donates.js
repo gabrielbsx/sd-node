@@ -2,25 +2,21 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return await queryInterface.createTable('payment_gateway', {
+    return await queryInterface.createTable('donates', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        unique: true,
         primaryKey: true,
       },
-      name: {
-        type: Sequelize.STRING(100),
-        allowNull: false,
-        unique: true,
-      },
-      key: {
-        type: Sequelize.STRING(),
+      id_user: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
       },
-      token: {
-        type: Sequelize.STRING(),
+      id_package: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
       },
       created_at: {
@@ -35,6 +31,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return await queryInterface.dropTable('payment_gateway');
+    return await queryInterface.dropTable('donates');
   }
 };

@@ -1,10 +1,60 @@
 <div class="col-md-8 p-0 m-0">
     <div class="col-md-12 my-2">
         <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
-            Painel de controle - doações
+            Painel de controle - pacote de doações
         </div>
         <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4">
-            Manutenção
+            <div class="col-md-12 my-1">
+                <a href="/painel-de-controle/criar-pacote-de-doacoes" class="btn btn-primary py-2">Criar pacote</a>
+                <a href="/painel-de-controle/adicionar-itens-de-doacoes" class="btn btn-primary py-2">Adicionar item</a>
+            </div>
+            <% if (data.count > 0) { %>
+                <table class="table table-dark table-hover">
+                    <head>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Valor</th>
+                            <th>Cash</th>
+                            <th>Data</th>
+                            <th>Itens</th>
+                            <th colspan="3">Ações</th>
+                        </tr>
+                    </head>
+                    <tbody>
+                        <% for (let i = 0; i < data.count; i++) { %>
+                            <tr>
+                                <td><%= data.rows[i].name %></td>
+                                <td>
+                                    <%= new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(data.rows[i].value) %>
+                                </td>
+                                <td><%= data.rows[i].donate %></td>
+                                <td class="time-ago"><%= data.rows[i].createdAt %></td>
+                                <td>
+                                    <% for (let j = 0; j < data.rows[i].donate_items.length; j++) { %>
+                                        <a class="btn btn-outline-primary" href="/painel-de-controle/editar-item-de-doacoes/<%= data.rows[i].donate_items[j].slug %>">
+                                            <%= data.rows[i].donate_items[j].itemname %>
+                                        </a>
+                                    <% } %>
+                                    <!--<a class="btn btn-primary" href="/painel-de-controle/lista-itens-de-doacoes/<%= data.rows[i].slug %>">
+                                        Lista de itens
+                                    </a>-->
+                                </td>
+                                <td>
+                                    <a class="btn btn-warning" href="/painel-de-controle/editar-pacote-de-doacoes/<%= data.rows[i].slug %>">
+                                        Editar
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger" href="/painel-de-controle/editar-pacote-de-doacoes/<%= data.rows[i].slug %>">
+                                        Deletar
+                                    </a>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <%- include('../../partials/pagination.ejs') %>
+            <% } %>
         </div>
     </div>
 </div>

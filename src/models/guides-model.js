@@ -1,17 +1,16 @@
 'use strict';
 const { Model, DataTypes } = require('sequelize');
 
-class News extends Model {
+class Guides extends Model {
   static init(sequelize) {
     super.init({
         title: DataTypes.STRING(100),
         slug: DataTypes.STRING(50),
         content: DataTypes.TEXT,
-        category: DataTypes.INTEGER,
         id_user: DataTypes.UUIDV4,
     }, {
       sequelize,
-      modelName: 'news'
+      modelName: 'guides'
     });
     return this;
   }
@@ -21,4 +20,4 @@ class News extends Model {
   }
 }
   
-module.exports = News;
+module.exports = Guides;

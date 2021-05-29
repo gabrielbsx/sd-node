@@ -10,7 +10,7 @@ module.exports = Joi.object().keys({
             changepassword: (schema) => schema.forbidden(),
         })
         .messages({
-            'string.base': 'Nome deve conter apenas caracteres alfa numéricos!',
+            //'string.base': 'Nome deve conter apenas caracteres alfa numéricos!',
             'string.empty': 'Nome não deve estar vázio!',
             'string.max': 'Nome muito grande!',
             'string.required': 'Nome obrigatório!',

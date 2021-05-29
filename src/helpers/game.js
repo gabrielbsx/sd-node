@@ -1,5 +1,7 @@
 const fs = require('fs');
 const userModel = require('../models/users-model');
+const axios = require('axios');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 module.exports = class Game {
     game = process.env.GAME_DIR;
@@ -18,6 +20,21 @@ module.exports = class Game {
 
     constructor () {}   
 
+    async request(url) {
+        try {
+            const request = await axios.get(url, {
+                headers: {
+                    'x-wyd-token': jwt.sign({}, process.env.JWT_SECRET),
+                    'content-type': 'application/json',
+                },
+            });
+
+            return request;
+        } catch (err) {
+            return {}
+        }
+    }
+
     async getInitial(username) {
         try {
             if (username[0].match(/^([a-zA-Z])$/)) {
@@ -29,20 +46,45 @@ module.exports = class Game {
         }
     }
 
-    async userExists(username) {
+    async getAccount(username) {
         try {
-            var initial = await this.getInitial(username);
-            var path = `${this.account + initial}/${username}`;
-            const user = await userModel.findOne({
-                where: {
-                    username: username,
+            if (await this.userExists(username)) {
+                const account = await this.request(`${process.env.GAME_API}/account/${username}`);
+    
+                if (Object.values(account.data).length > 0) {
+                    if (user) {
+                        return account.data;
+                    }
                 }
-            });
-            if (fs.existsSync(path) && user) {
-                return user;
             }
+            
             return false;
         } catch (err) {
+            return false;
+        }
+    }
+
+    async userExists(username) {
+        try {
+
+            const account = await this.request(`${process.env.GAME_API}/accountexists/${username}`);
+
+            if (account.status === 200) {
+                if (account.data) {
+                    const user = await userModel.findOne({
+                        where: {
+                            username: username,
+                        },
+                    });
+                    if (user) {
+                        return user;
+                    }
+                }
+            }
+
+            return false;
+        } catch (err) {
+            console.log(err);
             return false;
         }
     }

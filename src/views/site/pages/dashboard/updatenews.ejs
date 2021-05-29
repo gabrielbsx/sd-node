@@ -1,0 +1,39 @@
+<div class="col-md-8 p-0 m-0">
+    <div class="col-md-12 my-2">
+        <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
+            Painel de controle - editar notícia
+        </div>
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4 px-5">
+            <% if (typeof data !== 'undefined') { %>
+                <form method="post" action="/painel-de-controle/editar-noticia/<%= data.slug %>">
+                    <div class="form-group">
+                        <input name="title" type="text" class="form-control" placeholder="Título" value="<%= data.title %>">
+                    </div>
+                    <div class="form-group">
+                        <input name="slug" type="text" class="form-control" placeholder="Slug" value="<%= data.slug %>">
+                    </div>
+                    <div class="form-group">
+                        <select name="category" class="form-control">
+                            <option <%= data.category === 1 ? 'selected' : '' %> value="1">Novidade</option>
+                            <option <%= data.category === 2 ? 'selected' : '' %> value="2">Atualizações</option>
+                            <option <%= data.category === 3 ? 'selected' : '' %> value="3">Manutenção</option>
+                            <option <%= data.category === 4 ? 'selected' : '' %> value="4">Nota</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="content"><%= data.content %></textarea>
+                    </div>
+                    <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                    <input type="hidden" name="action" value="validate_captcha">
+                    <div class="form-group">
+                        <button class="btn btn-primary">
+                            Editar
+                        </button>
+                    </div>
+                </form>
+            <% } else { %>
+                Não encontrada!
+            <% } %>
+        </div>
+    </div>
+</div>

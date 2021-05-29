@@ -46,69 +46,42 @@ routes.get('/painel-de-controle/guildmark', isLoggedMiddleware.logged, dashboard
 routes.get('/painel-de-controle/alterar-senha', isLoggedMiddleware.logged, dashboardController.changepassword);
 routes.get('/painel-de-controle/suporte', isLoggedMiddleware.logged, dashboardController.support);
 routes.get('/painel-de-controle/doacoes', isLoggedMiddleware.logged, dashboardController.donate);
-
-
-routes.get('/painel-de-controle/noticias', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.news);
-
 routes.get('/painel-de-controle/sair', isLoggedMiddleware.logged, dashboardController.logout);
 
+
+routes.post('/painel-de-controle/alterar-senha', isLoggedMiddleware.logged, apiController.changepassword);
+routes.post('/painel-de-controle/guildmark', isLoggedMiddleware.logged, apiController.guildmark);
+
+routes.post('/painel-de-controle/criar-noticia', isLoggedMiddleware.logged, isAdminMiddleware, apiController.createnews);
+routes.post('/painel-de-controle/editar-noticia/:slug', isLoggedMiddleware.logged, isAdminMiddleware, apiController.updatenews);
+
+routes.post('/painel-de-controle/criar-guia-do-jogo', isLoggedMiddleware.logged, isAdminMiddleware, apiController.createguide);
+routes.post('/painel-de-controle/editar-guia-do-jogo/:slug', isLoggedMiddleware.logged, isAdminMiddleware, apiController.updateguide);
+
+routes.post('/painel-de-controle/criar-pacote-de-doacoes', isLoggedMiddleware.logged, isAdminMiddleware, apiController.createdonatepackage);
+routes.post('/painel-de-controle/editar-pacote-de-doacoes/:slug', isLoggedMiddleware.logged, isAdminMiddleware, apiController.updatedonatepackage);
+
+routes.post('/painel-de-controle/adicionar-itens-de-doacoes', isLoggedMiddleware.logged, isAdminMiddleware, apiController.createdonateitems);
+
+
+routes.get('/painel-de-controle/noticias', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.listnews);
+routes.get('/painel-de-controle/criar-noticia', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.news);
+routes.get('/painel-de-controle/editar-noticia/:slug', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.updatenews);
+routes.get('/painel-de-controle/deletar-noticia/:slug', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.deletenews);
+
+routes.get('/painel-de-controle/guia-do-jogo', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.guides);
+routes.get('/painel-de-controle/criar-guia-do-jogo', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.createguide);
+routes.get('/painel-de-controle/editar-guia-do-jogo/:slug', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.updateguide);
+routes.get('/painel-de-controle/deletar-guia-do-jogo/:slug', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.deleteguide);
+
+routes.get('/painel-de-controle/pacote-de-doacoes', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.donatepackages);
+routes.get('/painel-de-controle/criar-pacote-de-doacoes', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.createdonatepackages);
+routes.get('/painel-de-controle/editar-pacote-de-doacoes/:slug', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.updatedonatepackages);
+
+routes.get('/painel-de-controle/adicionar-itens-de-doacoes', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.createdonateitems);
+
+
 //routes.get('/painel-de-controle', isLoggedMiddleware.notLogged, dashboardController.index);
-
-
-
-//routes.get('/dashboard/login', isLoggedMiddleware.notLogged, userController.login);
-//routes.get('/dashboard/recovery', isLoggedMiddleware.notLogged, userController.recovery);
-//routes.get('/dashboard/register', isLoggedMiddleware.notLogged, userController.register);
-
-//LOGGED
-//routes.get('/dashboard/home', isLoggedMiddleware.logged, dashboardController.home);
-//routes.get('/dashboard/change-password', isLoggedMiddleware.logged, dashboardController.changepassword);
-//routes.get('/dashboard/recovery-numeric-password', isLoggedMiddleware.logged, dashboardController.recoverynumericpassword);
-//routes.get('/dashboard/guildmark', isLoggedMiddleware.logged, dashboardController.guildmark);
-//routes.get('/dashboard/ranking-players', isLoggedMiddleware.logged, dashboardController.rankingplayers);
-//routes.get('/dashboard/ranking-cities', isLoggedMiddleware.logged, dashboardController.rankingcities);
-//routes.get('/dashboard/donate', isLoggedMiddleware.logged, dashboardController.donate);
-//routes.get('/dashboard/donate-rules', isLoggedMiddleware.logged, dashboardController.donaterules);
-//routes.get('/dashboard/logout', isLoggedMiddleware.logged, userController.logout);
-
-
-/**
- * API
- */
-
-//routes.post('/dashboard/recovery', recaptchaMiddleware, isLoggedMiddleware.notLogged, apiController.recovery);
-//routes.post('/dashboard/register', recaptchaMiddleware, isLoggedMiddleware.notLogged, apiController.register);
-//routes.post('/dashboard/login', recaptchaMiddleware, isLoggedMiddleware.notLogged, apiController.login);
-//routes.post('/dashboard/guildmark', recaptchaMiddleware, isLoggedMiddleware.logged, apiController.guildmark);
-//routes.post('/dashboard/change-password', recaptchaMiddleware, isLoggedMiddleware.logged, apiController.changepassword);
-
-
-
-/**
- * ADMIN
- */
-
-//routes.get('/donate-items', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.donateitems);
-//routes.get('/dashboard/donate-packages', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.donatepackages);
-//routes.get('/dashboard/update-donate-packages/:id', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.changedonatepackage);
-//routes.get('/dashboard/list-donate-items/:id', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.listdonateitems);
-//routes.get('/dashboard/update-donate-items/:id', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.changedonateitem);
-//routes.get('/dashboard/payment-gateway', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.paymentgateway);
-//routes.get('/dashboard/update-payment-gateway/:id', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.updatepaymentgateway);
-
-/**
- * API
- */
-//routes.post('/dashboard/donate-packages', recaptchaMiddleware, isLoggedMiddleware.logged, isAdminMiddleware, apiController.createdonatepackage);
-//routes.post('/dashboard/update-donate-packages/:id', recaptchaMiddleware, isLoggedMiddleware.logged, isAdminMiddleware, apiController.updatedonatepackage);
-//routes.post('/dashboard/donate-items', recaptchaMiddleware, isLoggedMiddleware.logged, isAdminMiddleware, apiController.createdonateitem);
-//routes.post('/dashboard/update-donate-items', recaptchaMiddleware, isLoggedMiddleware.logged, isAdminMiddleware, apiController.updatedonateitems);
-//routes.post('/dashboard/payment-gateway', recaptchaMiddleware, isLoggedMiddleware.logged, isAdminMiddleware, apiController.creategateway);
-//routes.post('/dashboard/update-payment-gateway/:id', recaptchaMiddleware, isLoggedMiddleware.logged, isAdminMiddleware, apiController.creategateway);
-
-//routes.get('/dashboard/delete-donate-packages/:id', isLoggedMiddleware.logged, isAdminMiddleware, apiController.deletedonatepackage);
-//routes.get('/dashboard/delete-donate-items/:id', isLoggedMiddleware.logged, isAdminMiddleware, apiController.deletedonateitem);
-
 
 routes.use(errorController.error404);
 
