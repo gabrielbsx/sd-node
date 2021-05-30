@@ -23,6 +23,27 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
+      method: {
+        type: Sequelize.STRING(100),
+        allowNull: false,
+      },
+      reference_id: {
+        type: Sequelize.STRING(),
+        allowNull: false,
+        unique: true,
+      },
+      content: {
+        type: Sequelize.STRING(),
+        allowNull: false,
+      },
+      payment_url: {
+        type: Sequelize.STRING(),
+        allowNull: false,
+      },
+      qrcode: {
+        type: Sequelize.STRING(),
+        allowNull: true,
+      },
       created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,

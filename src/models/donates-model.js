@@ -12,9 +12,26 @@ class Donates extends Model {
           type: DataTypes.UUIDV4,
           allowNull: false,
         },
-        state: {
-          type: DataTypes.INTEGER.UNSIGNED,
+        reference_id: {
+          type: DataTypes.STRING,
           allowNull: false,
+          unique: true,
+        },
+        content: {
+          type: DataTypes.STRING,
+          allowNull: true,
+        },
+        state: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        payment_url: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        qrcode: {
+          type: DataTypes.STRING,
+          allowNull: true,
         },
     }, {
       sequelize,

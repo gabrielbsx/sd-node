@@ -8,6 +8,7 @@ const paymentGatewayModel = require('./models/paymentgateway-model');
 const guidesModel = require('./models/guides-model');
 const guideArticlesModel = require('./models/guidearticles-model');
 const donatesModel = require('./models/donates-model');
+const picpayGatewayModel = require('./models/picpaygateway-model');
 
 const conn = new Sequelize(dbConfig);
 
@@ -15,7 +16,7 @@ userModel.init(conn);
 newsModel.init(conn);
 donatepackagesModel.init(conn);
 donateitemsModel.init(conn);
-paymentGatewayModel.init(conn);
+picpayGatewayModel.init(conn);
 guidesModel.init(conn);
 guideArticlesModel.init(conn);
 donatesModel.init(conn);
