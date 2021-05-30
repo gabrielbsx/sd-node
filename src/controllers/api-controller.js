@@ -38,9 +38,9 @@ exports.register = async (req, res, next) => {
             .validateAsync(user, { abortEarly: false, });
 
             
-        if (!(await Game.userExists(username))) {
+        if (!(await Game.userExists(username)) && !(await userModel.findOne({ where: { username: username, } }))) {
             const response = await createAccount(username, password);
-            if (!(response)) {
+            if (response) {
                 delete user.password_confirm;
                 user.id = v4();
                 user.password = await bcrypt.hash(user.password, await bcrypt.genSalt(15));
