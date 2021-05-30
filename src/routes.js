@@ -64,6 +64,10 @@ routes.post('/painel-de-controle/editar-pacote-de-doacoes/:slug', isLoggedMiddle
 routes.post('/painel-de-controle/adicionar-itens-de-doacoes', isLoggedMiddleware.logged, isAdminMiddleware, apiController.createdonateitems);
 routes.post('/painel-de-controle/editar-item-de-doacoes/:slug', isLoggedMiddleware.logged, isAdminMiddleware, apiController.updatedonateitems);
 
+routes.post('/painel-de-controle/efetuar-doacao/:method', isLoggedMiddleware.logged, apiController.createdonate);
+
+routes.post('/painel-de-controle/sistema-de-pagamentos/:method', isLoggedMiddleware.logged, apiController.paymentsystem);
+
 routes.get('/painel-de-controle/noticias', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.listnews);
 routes.get('/painel-de-controle/criar-noticia', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.news);
 routes.get('/painel-de-controle/editar-noticia/:slug', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.updatenews);
@@ -86,7 +90,9 @@ routes.get('/painel-de-controle/deletar-item-de-doacoes/:slug', isLoggedMiddlewa
 
 routes.get('/painel-de-controle/doar/:method/:slug', isLoggedMiddleware.logged, dashboardController.purchase);
 routes.get('/painel-de-controle/historico-doacoes', isLoggedMiddleware.logged, dashboardController.historydonate);
-routes.post('/painel-de-controle/efetuar-doacao/:method', isLoggedMiddleware.logged, dashboardController.createdonate);
+routes.get('/painel-de-controle/finalizar-doacao/:id', isLoggedMiddleware.logged, dashboardController.donatedone);
+
+routes.get('/painel-de-controle/sistema-de-pagamentos', isLoggedMiddleware.logged, dashboardController.paymentsystem);
 
 routes.use(errorController.error404);
 

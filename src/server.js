@@ -1,16 +1,17 @@
-const   express     = require('express'),
-        cors        = require('cors'),
-        morgan      = require('morgan'),
-        sequelize   = require('sequelize'),
-        helmet      = require('helmet'),
-        compression = require('compression'),
-        jwt         = require('jsonwebtoken'),
-        ejs         = require('ejs'),
-        flash       = require('express-flash-messages'),
-        path        = require('path'),
-        fileUpload  = require('express-fileupload'),
-        session     = require('express-session'),
-        routes      = require('./routes');
+const   express         = require('express'),
+        cors            = require('cors'),
+        morgan          = require('morgan'),
+        sequelize       = require('sequelize'),
+        helmet          = require('helmet'),
+        compression     = require('compression'),
+        jwt             = require('jsonwebtoken'),
+        ejs             = require('ejs'),
+        flash           = require('express-flash-messages'),
+        path            = require('path'),
+        fileUpload      = require('express-fileupload'),
+        session         = require('express-session'),
+        routes          = require('./routes'),
+        cookieSession   = require('cookie-session');
 
 require('dotenv').config();
 require('./models');
@@ -26,11 +27,16 @@ app.use(compression());
 
 app.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024, }, }));
 app.use(flash());
-app.use(session({
+/*app.use(session({
     secret: process.env.SECRET,
     cookie: { maxAge: 365 * 24 * 60 * 60 * 1000, },
     resave: false,   
-    saveUninitialized: false,
+    saveUninitialized: true,
+}));*/
+app.use(cookieSession({
+    name: 'session',
+    keys: [process.env.SECRET],
+    maxAge: 1 * 60 * 60 * 100,
 }));
 app.set('trust proxy', 1);
 app.set('views', path.join(__dirname, '/views'));

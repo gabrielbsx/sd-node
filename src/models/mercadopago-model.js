@@ -1,18 +1,18 @@
 'use strict';
 const { Model, DataTypes } = require('sequelize');
 
-class PicpayGateway extends Model {
+class MercadoPagoGateway extends Model {
   static init(sequelize) {
     super.init({
-        xpicpaytoken: {
+        public_key: {
           type: DataTypes.STRING(255),
         },
-        xsellertoken: {
+        access_token: {
           type: DataTypes.STRING(255),
         },
     }, {
       sequelize,
-      modelName: 'picpay_gateway'
+      modelName: 'mercadopago_gateway'
     });
     return this;
   }
@@ -22,4 +22,4 @@ class PicpayGateway extends Model {
   }
 }
   
-module.exports = PicpayGateway;
+module.exports = MercadoPagoGateway;

@@ -3,17 +3,22 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     return await queryInterface.createTable('picpay_gateway', {
+      id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
+        unique: true,
+        primaryKey: true,
+      },
       xpicpaytoken: {
         type: Sequelize.STRING(),
         allowNull: false,
         unique: true,
-        primaryKey: true,
       },
       xsellertoken: {
         type: Sequelize.STRING(),
         allowNull: false,
         unique: true,
-        primaryKey: true,
       },
       created_at: {
         type: Sequelize.DATE,

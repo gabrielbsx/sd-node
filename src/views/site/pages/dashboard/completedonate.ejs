@@ -1,0 +1,51 @@
+<div class="col-md-8 p-0 m-0">
+    <div class="col-md-12 my-2">
+        <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
+            Painel de controle - histórico de doações
+        </div>
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4 px-5">
+            <% if (typeof data !== 'undefined') { %>
+                <div class="col-md-12 row">
+                    <div class="card col-md-12">
+                        <div class="card-body text-dark">
+                            <div class="card-text">
+                                <div class="text-justify col-md-12">
+                                    <h5 class="card-title">
+                                        <%= data.donate_package.name %>
+                                    </h5>
+                                </div>
+                                <div class="text-justify col-md-12">
+                                    <span class="font-weight-bold">Valor:</span> <%= new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(data.donate_package.value) %>
+                                </div>
+                                <div class="text-justify col-md-12">
+                                    <span class="font-weight-bold">Donate:</span> <%= data.donate_package.donate %>
+                                </div>
+                                <div class="text-justify col-md-12">
+                                    <span class="font-weight-bold">Bônus:</span> <%= data.donate_package.percent %>%
+                                </div>
+                                <div class="text-justify col-md-12">
+                                    <span class="font-weight-bold">Valor c/ bônus:</span> <%= (data.donate_package.donate + (data.donate_package.donate * data.donate_package.percent)) %>
+                                </div>
+                                <div class="text-justify col-md-12">
+                                    <span class="font-weight-bold">Itens:</span>
+                                    <% for (let i = 0; i < data.donate_package.donate_items.length; i++) { %>
+                                        <div class="col-md-12 bg-light text-dark my-1">
+                                            <%= data.donate_package.donate_items[i].itemname %>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                <div class="text-center mt-2 col-md-12">
+                                    <a target="_blank" href="<%= data.payment_url %>" class="btn btn-success">
+                                        Finalizar doação
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } else { %>
+                Não há doações!
+            <% } %>
+        </div>
+    </div>
+</div>

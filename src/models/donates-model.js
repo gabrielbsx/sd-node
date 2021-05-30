@@ -21,6 +21,10 @@ class Donates extends Model {
           type: DataTypes.STRING,
           allowNull: true,
         },
+        method: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
         state: {
           type: DataTypes.STRING,
           allowNull: false,

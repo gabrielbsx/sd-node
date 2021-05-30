@@ -1,0 +1,60 @@
+<div class="col-md-8 p-0 m-0">
+    <div class="col-md-12 my-2">
+        <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
+            Painel de controle - sistema de pagamentos
+        </div>
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4 px-5">
+            <h4>Picpay</h4>
+            <form method="post" action="/painel-de-controle/sistema-de-pagamentos/picpay">
+                <% if (picpay) { %>
+                    <div class="form-group">
+                        <input name="xpicpaytoken" type="text" class="form-control" value="<%= picpay.xpicpaytoken %>" placeholder="X Picpay Token">
+                    </div>
+                    <div class="form-group">
+                        <input name="xsellertoken" type="text" class="form-control" value="<%= picpay.xsellertoken %>" placeholder="X Picpay Seller">
+                    </div>
+                <% } else { %>
+                    <div class="form-group">
+                        <input name="xpicpaytoken" type="text" class="form-control" placeholder="X Picpay Token">
+                    </div>
+                    <div class="form-group">
+                        <input name="xsellertoken" type="text" class="form-control" placeholder="X Picpay Seller">
+                    </div>
+                <% } %>
+                <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                <input type="hidden" name="action" value="validate_captcha">
+                <div class="form-group">
+                    <button class="btn btn-primary">
+                        Salvar
+                    </button>
+                </div>
+            </form>
+            <h4>Mercado Pago</h4>
+
+            <form method="post" action="/painel-de-controle/sistema-de-pagamentos/mercadopago">
+                <% if (mercadopago) { %>
+                    <div class="form-group">
+                        <input name="public_key" type="text" class="form-control" value="<%= mercadopago.public_key %>" placeholder="Public Key">
+                    </div>
+                    <div class="form-group">
+                        <input name="access_token" type="text" class="form-control" value="<%= mercadopago.access_token %>" placeholder="Access Token">
+                    </div>
+                <% } else { %>
+                    <div class="form-group">
+                        <input name="public_key" type="text" class="form-control" placeholder="Public Key">
+                    </div>
+                    <div class="form-group">
+                        <input name="access_token" type="text" class="form-control" placeholder="Access Token">
+                    </div>
+                <% } %>
+                <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                <input type="hidden" name="action" value="validate_captcha">
+                <div class="form-group">
+                    <button class="btn btn-primary">
+                        Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

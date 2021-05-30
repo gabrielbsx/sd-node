@@ -1,5 +1,6 @@
 require('dotenv').config();
 const Joi = require('joi');
+const fetch = require('node-fetch');
 const userSchema =  require('../schemas/users-schema');
 const guildmarkSchema = require('../schemas/guildmark-schema');
 const donatepackageSchema = require('../schemas/donatepackage-schema');
@@ -14,6 +15,8 @@ const paymentGatewayModel = require('../models/paymentgateway-model');
 const guidesModel = require('../models/guides-model');
 const guideArticlesModel = require('../models/guidearticles-model');
 const donatesModel = require('../models/donates-model');
+const picpayGatewayModel = require('../models/picpaygateway-model');
+const mercadoPagoGatewayModel = require('../models/mercadopago-model');
 const Users = require('../models/users-model');
 const Game = new (require('../helpers/game'))();
 const bcrypt = require("bcryptjs");
@@ -788,5 +791,154 @@ exports.createdonateitems = async (req, res, next) => {
             message: err.details || 'Erro interno!',
         });
         return res.redirect('/painel-de-controle/itens-de-doacoes');
+    }
+};
+
+exports.paymentsystem = async (req, res, next) => {
+    try {
+        const { method } = req.params;
+
+        if (method === 'picpay') {
+            const {
+                xpicpaytoken,
+                xsellertoken,
+            } = req.body;
+
+            const gateway = await picpayGatewayModel.findOne({});
+
+            if (gateway) {
+                if (await picpayGatewayModel.update({
+                    xpicpaytoken: xpicpaytoken,
+                    xsellertoken: xsellertoken,
+                }, {
+                    where: {
+                        id: gateway.id,
+                    },
+                })) {
+                    req.flash('success', {
+                        message: 'Picpay salvo com sucesso!',
+                    });
+                } else {
+                    req.flash('error', {
+                        message: 'Não foi possível alterar o método picpay!',
+                    });
+                }
+            } else {
+                if (await picpayGatewayModel.create({
+                    xpicpaytoken: xpicpaytoken,
+                    xsellertoken: xsellertoken,
+                })) {
+                    req.flash('success', {
+                        message: 'Picpay salvo com sucesso!',
+                    });
+                } else {
+                    req.flash('error', {
+                        message: 'Não foi possível alterar o método picpay!',
+                    });
+                }
+            }
+        }
+
+        return res.redirect('/painel-de-controle/sistema-de-pagamentos');
+    } catch (err) {
+        return res.redirect('/');
+    }
+};
+
+exports.createdonate = async (req, res, next) => {
+    try {
+        const { method } = req.params;
+        const { id_package } = req.body;
+
+        if (method === 'picpay') {
+            const id = v4();
+
+            const gateway = await picpayGatewayModel.findOne({});
+
+            if (gateway) {
+
+                const package = await donatepackagesModel.findOne({
+                    where: {
+                        id: id_package,
+                    },
+                });
+
+                if (package) {
+                    const referenceId = v4();
+
+                    const body = {
+                        referenceId: referenceId,
+                        callbackUrl: `${process.env.CALLBACK_URL}`,
+                        expiresAt: new Date(new Date().getTime() + (5 * 24 * 60 * 60 * 1000)), //5 dias
+                        returnUrl: `${process.env.RETURN_URL}/${method}`,
+                        value: package.value,
+                        buyer: {
+                            firstName: 'Gabriel',
+                            lastName: 'Silva',
+                            document: '461.905.698-70',
+                        },
+                    };
+                      
+                    const response = await fetch('https://appws.picpay.com/ecommerce/public/payments', {
+                        method: 'post',
+                        headers: {
+                            'content-type': 'application/json',
+                            'x-picpay-token': gateway.xpicpaytoken,
+                        },
+                        body: JSON.stringify(body),
+                    });
+                    
+                    if (response.status === 200) {
+                        const data = await response.json();
+
+                        if (data.referenceId === referenceId) {
+                            const donate = await donatesModel.create({
+                                id: id,
+                                id_user: req.session.user.id,
+                                id_package: id_package,
+                                method: 'picpay',
+                                state: 0,
+                                reference_id: referenceId,
+                                payment_url: data.paymentUrl,
+                                qrcode: data.qrcode.base64,
+                                content: data.qrcode.content,
+                            });
+                    
+                            if (donate) {
+                                return res.redirect(`/painel-de-controle/finalizar-doacao/${id}`);
+                            } else {
+                                req.flash('error', {
+                                    message: 'Não foi possível gerar o pagamento!',
+                                });
+                            }
+                        } else {
+                            req.flash('error', {
+                                message: 'Houve algum problema no método de pagamento!',
+                            });
+                        }
+                    } else {
+                        req.flash('error', {
+                            message: 'Não foi possível utilizar o método de pagamento!',
+                        });
+                    }
+                } else {
+                    req.flash('error', {
+                        message: 'Pacote inexistente!',
+                    });
+                }
+            } else {
+                req.flash('error', {
+                    message: 'Método de pagamento desabilitado!',
+                });
+            }    
+        } else {
+            req.flash('error', {
+                message: 'Método de pagemento inexistente!',
+            });
+        }
+
+        return res.redirect('/painel-de-controle/doacoes');
+    } catch (err) {
+        return res.redirect('/painel-de-controle/doacoes');
     }
 };

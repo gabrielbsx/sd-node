@@ -18,19 +18,19 @@
                                             </h5>
                                         </div>
                                         <div class="text-left col-md-12">
-                                            Valor: <%= new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(data.rows[i].value) %>
+                                            <span class="font-weight-bold">Valor:</span> <%= new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(data.rows[i].value) %>
                                         </div>
                                         <div class="text-left col-md-12">
-                                            Donate: <%= data.rows[i].donate %>
+                                            <span class="font-weight-bold">Donate:</span> <%= data.rows[i].donate %>
                                         </div>
                                         <div class="text-left col-md-12">
-                                            Bônus: <%= data.rows[i].percent %>%
+                                            <span class="font-weight-bold">Bônus:</span> <%= data.rows[i].percent %>%
                                         </div>
                                         <div class="text-left col-md-12">
-                                            Valor c/ bônus: <%= (data.rows[i].donate + (data.rows[i].donate * data.rows[i].percent)) %>
+                                            <span class="font-weight-bold">Valor c/ bônus:</span> <%= (data.rows[i].donate + (data.rows[i].donate * data.rows[i].percent)) %>
                                         </div>
                                         <div class="text-left col-md-12">
-                                            Itens:
+                                            <span class="font-weight-bold">Itens:</span>
                                             <% for (let j = 0; j < data.rows[i].donate_items.length; j++) { %>
                                                 <div class="col-md-12 bg-light text-dark my-1">
                                                     <%= data.rows[i].donate_items[j].itemname %>

@@ -1,3 +1,4 @@
+const fetch = require('node-fetch');
 const donatepackagesModel = require('../models/donatepackages-model');
 const donateitemsModel = require('../models/donateitems-model');
 const paymentGatewayModel = require('../models/paymentgateway-model');
@@ -7,6 +8,7 @@ const newsModel = require('../models/news-model');
 const usersModel = require('../models/users-model');
 const donatesModel = require('../models/donates-model');
 const picpayGatewayModel = require('../models/picpaygateway-model');
+const mercadopagoModel = require('../models/mercadopago-model');
 const { v4 } = require('uuid');
 const axios = require('axios');
 require('dotenv').config();
@@ -711,14 +713,6 @@ exports.purchase = async (req, res, next) => {
             });
     
             if (data) {
-
-                const { key, token } = await paymentGatewayModel.findOne({
-                    where: {
-                        name: 'picpay',
-                    },
-                });
-        
-
                 return res.render('site/layouts/dashboard', {
                     page: 'purchase',
                     method: method,
@@ -738,6 +732,7 @@ exports.purchase = async (req, res, next) => {
 
         return res.redirect('/painel-de-controle/doacoes');
     } catch (err) {
+        console.log(err);
         return res.redirect('/');
     }
 };
@@ -778,85 +773,46 @@ exports.historydonate = async (req, res, next) => {
     }
 };
 
-exports.createdonate = async (req, res, next) => {
+exports.donatedone = async (req, res, next) => {
     try {
-        const { method } = req.params;
-        const { id_package } = req.body;
+        const { id } = req.params;
 
-        if (method === 'picpay') {
-            const id = v4();
+        const purchase = await donatesModel.findOne({
+            where: {
+                id: id,
+                id_user: req.session.user.id,
+            },
+            include: [{
+                model: donatepackagesModel,
+                include: [{
+                    model: donateitemsModel,
+                }],
+            }],
+        });
 
-            const { xpicpaytoken, xsellertoken } = await picpayGatewayModel.findOne();
-
-            if (typeof xpicpaytoken !== 'undefined' && typeof xsellertoken !== 'undefined') {
-
-                const package = await donatepackagesModel.findOne({
-                    where: {
-                        id: id_package,
-                    },
-                });
-
-                if (package) {
-                    const _request = axios.post('https://appws.picpay.com/ecommerce/public/payments', {
-                        callbackUrl: `${process.env.CALLBACK_URL}/${method}`,
-                        expiresAt: new Date ((new Date.getTime()) + (1000 * 60 * 60 * 24 * 2)),
-                        returnUrl: `${process.env.RETURN_URL}`,
-                        value: package.value,
-                        buyer: {
-                            firstName: '',
-                            lastName: '',
-                            document: '',
-                        },
-                    }, {
-                        headers: {
-                            'x-picpay-token': xpicpaytoken,
-                            'Content-Type': 'application/json',
-                        }
-                    });
-    
-                    console.log(_request);
-    
-                    const donate = false;
-                    
-                    /*const donate = await donatesModel.create({
-                        id: id,
-                        id_user: req.session.user.id,
-                        id_package: id_package,
-                        method: 'picpay',
-                        state: 0,
-                        reference_id: '',
-                        payment_url: '',
-                        qrcode: '',
-                        content: '',
-                    });*/
-            
-                    if (donate) {
-                        return res.render('site/layouts/dashboard', {
-                            page: 'makedonate',
-                            data: donate,
-                        });
-                    } else {
-                        req.flash('error', {
-                            message: 'Não foi possível gerar o pagamento!',
-                        });
-                    }
-                } else {
-                    req.flash('error', {
-                        message: 'Pacote inexistente!',
-                    });
-                }
-            } else {
-                req.flash('error', {
-                    message: 'Método de pagamento desabilitado!',
-                });
-            }    
-        } else {
-            req.flash('error', {
-                message: 'Método de pagemento inexistente!',
+        if (purchase) {
+            return res.render('site/layouts/dashboard', {
+                page: 'completedonate',
+                data: purchase,
             });
         }
 
-        return res.redirect('/painel-de-controle/doacoes');
+        return res.redirect('/painel-de-controle/historico-doacoes');
+    } catch (err) {
+        return res.redirect('/');
+    }
+};
+
+exports.paymentsystem = async (req, res, next) => {
+    try {
+        const picpay = await picpayGatewayModel.findOne({});
+        const mercadopago = await mercadopagoModel.findOne({});
+
+        return res.render('site/layouts/dashboard', {
+            page: 'paymentsystem',
+            picpay: picpay,
+            mercadopago: mercadopago,
+        });
     } catch (err) {
         console.log(err)
         return res.redirect('/');
