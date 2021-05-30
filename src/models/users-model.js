@@ -23,12 +23,10 @@ class Users extends Model {
           allowNull: false,
         },
         access: {
-          type: DataTypes.INTEGER(1),
-          allowNull: false,
+          type: DataTypes.INTEGER(1)
         },
         status: {
-          type: DataTypes.INTEGER(1),
-          allowNull: false,
+          type: DataTypes.INTEGER(1)
         },
       },
       {

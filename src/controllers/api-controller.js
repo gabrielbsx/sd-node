@@ -39,12 +39,12 @@ exports.register = async (req, res, next) => {
 
             
         if (!(await Game.userExists(username)) && !(await userModel.findOne({ where: { username: username, } }))) {
-            const response = await createAccount(username, password);
-            if (response) {
-                delete user.password_confirm;
-                user.id = v4();
-                user.password = await bcrypt.hash(user.password, await bcrypt.genSalt(15));
-                if (await userModel.create(user)) {
+            delete user.password_confirm;
+            user.id = v4();
+            user.status = 0;
+            user.access = 1;
+            user.password = await bcrypt.hash(user.password, await bcrypt.genSalt(15));
+            if (await userModel.create(user)) {
                     if (await Game.createAccount(username, password)) {
                         req.flash('success', {
                             message: 'Cadastro efetuado com sucesso!',
@@ -62,14 +62,9 @@ exports.register = async (req, res, next) => {
                             message: 'Não foi possível cadastrar!',
                         });
                     }
-                } else {
-                    req.flash('error', {
-                        message: 'Não foi possível cadastrar a conta!',
-                    });
-                }
             } else {
                 req.flash('error', {
-                    message: 'Não foi possível criar a conta!',
+                    message: 'Não foi possível cadastrar a conta!',
                 });
             }
         } else {
