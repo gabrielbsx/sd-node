@@ -25,12 +25,12 @@ const axios = require('axios');
 
 exports.register = async (req, res, next) => {
     try {
-        const { name, username, password, password_confirm, email } = req.body;
+        const { name, username, password, confirm_password, email } = req.body;
         user = {
             name: name,
             username: username,
             password: password,
-            password_confirm: password_confirm,
+            password_confirm: confirm_password,
             email: email,
         };
         await userSchema

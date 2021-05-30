@@ -50,12 +50,15 @@ module.exports = class Game {
         try {
             if (await this.userExists(username)) {
                 const account = await this.request(`${process.env.GAME_API}/account/${username}`);
-    
-                if (Object.values(account.data).length > 0) {
-                    if (user) {
-                        return account.data;
+
+                if (account.status === 200) {
+                    if (Object.values(account.data).length > 0) {
+                        if (user) {
+                            return account.data;
+                        }
                     }
                 }
+    
             }
             
             return false;
@@ -91,24 +94,16 @@ module.exports = class Game {
 
     async createAccount(username, password) {
         try {
-            var initial = await this.getInitial(username);
-            var path = `${this.account + initial}/${username}`;
 
-            var account = fs.readFileSync(this.binaryAccount);
-            username = Buffer.from(username, undefined);
-            password = Buffer.from(password, undefined);
+            const account = await this.request(`${process.env.GAME_API}/createaccount/${username}/${password}`);
 
-            for (var i = 0; i < username.length; i++) {
-                account[i] = username[i];
+            if (account.status === 200) {
+                if (account.data) {
+                    return true;
+                }
             }
-
-            for (i = 0; i < password.length; i++) {
-                account[(i + 16)] = password[i];
-            }
-
-            fs.writeFileSync(path, account);
-
-            return true;
+            
+            return false;
         } catch (err) {
             return false;
         }
@@ -116,11 +111,15 @@ module.exports = class Game {
 
     async changePassword(username, password) {
         try {
-            const path = process.env.GAME_DIR + 'Common/ImportPass/' + (new Date().getTime()).toString() + '.txt';
+            const account = await this.request(`${process.env.GAME_API}/updateaccount/${username}/${password}`);
 
-            fs.writeFileSync(path, `${username} ${password}`);
+            if (account.status === 200) {
+                if (account.data) {
+                    return true;
+                }
+            }
 
-            return true;
+            return false;
         } catch (err) {
             return false;
         }
