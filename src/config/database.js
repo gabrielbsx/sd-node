@@ -1,8 +1,8 @@
 module.exports = {
-  'username': 'root',
-  'password': null,
-  'database': 'over',
-  'host': '127.0.0.1',
+  'username': 'spiritdestiny',
+  'password': '*#Sp1r1TDest1996',
+  'database': 'spiritdestiny',
+  'host': 'mysql743.umbler.com',
   'dialect': 'mysql',
   'define': {
     'timestamps': true,
