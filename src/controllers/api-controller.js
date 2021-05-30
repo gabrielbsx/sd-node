@@ -37,33 +37,39 @@ exports.register = async (req, res, next) => {
             .tailor('register')
             .validateAsync(user, { abortEarly: false, });
 
-        const response = await axios.get(`${process.env.GAME_API}/account/${username}`);
-
-        if (await Game.userExists(username) === false) {
-            delete user.password_confirm;
-            user.id = v4();
-            user.password = await bcrypt.hash(user.password, await bcrypt.genSalt(15));
-            if (await userModel.create(user)) {
-                if (await Game.createAccount(username, password)) {
-                    req.flash('success', {
-                        message: 'Cadastro efetuado com sucesso!',
-                    });
+            
+        if (!(await Game.userExists(username))) {
+            const response = await createAccount(username, password);
+            if (!(response)) {
+                delete user.password_confirm;
+                user.id = v4();
+                user.password = await bcrypt.hash(user.password, await bcrypt.genSalt(15));
+                if (await userModel.create(user)) {
+                    if (await Game.createAccount(username, password)) {
+                        req.flash('success', {
+                            message: 'Cadastro efetuado com sucesso!',
+                        });
+                    } else {
+                        await userModel.destroy({
+                            where: {
+                                id: user.id,
+                                name: name,
+                                username: username,
+                                email: email,
+                            },
+                        });
+                        req.flash('error', {
+                            message: 'Não foi possível cadastrar!',
+                        });
+                    }
                 } else {
-                    await userModel.destroy({
-                        where: {
-                            id: user.id,
-                            name: name,
-                            username: username,
-                            email: email,
-                        },
-                    });
                     req.flash('error', {
-                        message: 'Não foi possível cadastrar!',
+                        message: 'Não foi possível cadastrar a conta!',
                     });
                 }
             } else {
                 req.flash('error', {
-                    message: 'Não foi possível cadastrar a conta!',
+                    message: 'Não foi possível criar a conta!',
                 });
             }
         } else {
