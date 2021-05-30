@@ -697,24 +697,34 @@ exports.deletedonateitems = async (req, res, next) => {
 
 exports.purchase = async (req, res, next) => {
     try {
-        const { slug } = req.params;
+        const { slug, method } = req.params;
 
-        const data = await donatepackagesModel.findOne({
-            where: {
-                slug: slug,
-            },
-        });
+        if (method === 'picpay') {
+            const data = await donatepackagesModel.findOne({
+                where: {
+                    slug: slug,
+                },
+            });
+    
+            if (data) {
+                return res.render('site/layouts/dashboard', {
+                    page: 'purchase',
+                    method: method,
+                    data: data,
+                });
+            } else {
+                req.flash('error', {
+                    message: 'Não foi possível encontrar o pacote de doação!',
+                });
+            }
 
-        if (!data) {
+        } else {
             req.flash('error', {
-                message: 'Não foi possível encontrar o pacote de doação!',
+                message: 'Método de pagamento não existente!',
             });
         }
 
-        return res.render('site/layouts/dashboard', {
-            page: 'purchase',
-            data: data,
-        });
+        return res.redirect('/painel-de-controle/doacoes');
     } catch (err) {
         return res.redirect('/');
     }
@@ -751,6 +761,42 @@ exports.historydonate = async (req, res, next) => {
             page: 'historydonate',
             data: donate,
         });
+    } catch (err) {
+        return res.redirect('/');
+    }
+};
+
+exports.createdonate = async (req, res, next) => {
+    try {
+        const { method } = req.params;
+        const { id_package } = req.body;
+
+        if (method === 'picpay') {
+            const id = v4();
+    
+            const donate = await donatesModel.create({
+                id_user: req.session.user.id,
+                id_package: id_package,
+                state: 0,
+            });
+    
+            if (donate) {
+                return res.render('site/layouts/dashboard', {
+                    page: 'makedonate',
+                    data: donate,
+                });
+            } else {
+                req.flash('error', {
+                    message: 'Não foi possível gerar o pagamento!',
+                });
+            }
+        } else {
+            req.flash('error', {
+                message: 'Método de pagemento inexistente!',
+            });
+        }
+
+        return res.redirect('/painel-de-controle/doacoes');
     } catch (err) {
         return res.redirect('/');
     }

@@ -32,7 +32,7 @@
                         Informe-se com a staff e certifique-se de que está realmente efetuando a doação no local certo.
                     </div>
                 </div>
-                <form method="post" action="/painel-de-controle/criar-doacao">
+                <form method="post" action="/painel-de-controle/efetuar-doacao/<%= method %>">
                     <input type="hidden" name="id_package" value="<%= data.id %>">
                     <div class="form-group">
                         <button class="btn btn-primary">

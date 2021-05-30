@@ -790,28 +790,3 @@ exports.createdonateitems = async (req, res, next) => {
         return res.redirect('/painel-de-controle/itens-de-doacoes');
     }
 };
-
-exports.createdonate = async (req, res, next) => {
-    try {
-        const { id_package } = req.body;
-
-        const id = v4();
-
-        const donate = await donatesModel.create({
-            id_user: req.session.user.id,
-            id_package: id_package,
-        });
-
-        if (donate) {
-            req.flash('success', {
-                message: 'Pagamento gerado com sucesso!',
-            });
-        } else {
-            req.flash('error', {
-                message: 'Não foi possível gerar o pagamento!',
-            });
-        }
-    } catch (err) {
-        return res.redirect('/');
-    }
-};

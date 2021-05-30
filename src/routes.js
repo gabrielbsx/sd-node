@@ -87,7 +87,6 @@ routes.get('/painel-de-controle/deletar-item-de-doacoes/:slug', isLoggedMiddlewa
 routes.get('/painel-de-controle/doar/:method/:slug', isLoggedMiddleware.logged, dashboardController.purchase);
 routes.get('/painel-de-controle/historico-doacoes', isLoggedMiddleware.logged, dashboardController.historydonate);
 routes.post('/painel-de-controle/efetuar-doacoa/:method', isLoggedMiddleware.logged, dashboardController.createdonate);
-//routes.get('/painel-de-controle', isLoggedMiddleware.notLogged, dashboardController.index);
 
 routes.use(errorController.error404);
 
