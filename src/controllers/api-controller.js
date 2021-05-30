@@ -285,12 +285,12 @@ exports.createdonatepackage = async (req, res, next) => {
                 message: 'Não foi possível adicionar pacote de doação!',
             });
         }
-        return res.redirect('/painel-de-controle/pacotes-de-doacoes');
+        return res.redirect('/painel-de-controle/pacote-de-doacoes');
     } catch (err) {
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect('/painel-de-controle/pacotes-de-doacoes');
+        return res.redirect('/painel-de-controle/pacote-de-doacoes');
     }
 };
 
@@ -384,9 +384,11 @@ exports.updatedonatepackage = async (req, res, next) => {
 
 exports.updatedonateitems = async (req, res, next) => {
     try {
-        const { slug, id_package, itemname, item_id, eff1, eff2, eff3, effv1, effv2, effv3 } = req.body;
+        const { slug } = req.params;
+        const { id_package, itemname, item_id, eff1, eff2, eff3, effv1, effv2, effv3 } = req.body;
+        const nSlug = req.body.slug;
         var donateitems = {
-            slug: slug,
+            slug: nSlug,
             id_package: id_package,
             itemname: itemname,
             item_id: item_id,
@@ -413,12 +415,12 @@ exports.updatedonateitems = async (req, res, next) => {
                 message: 'Pacote de doação inexistente!',
             });
         }
-        return res.redirect(`/painel-de-controle/lista-de-itens/${id_package}`);
+        return res.redirect(`/painel-de-controle/editar-item-de-doacoes/${nSlug}`);
     } catch (err) {
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect('/painel-de-controle/pacotes-de-doacao');
+        return res.redirect('/painel-de-controle/pacote-de-doacoes');
     } 
 };
 

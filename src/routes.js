@@ -62,7 +62,7 @@ routes.post('/painel-de-controle/criar-pacote-de-doacoes', isLoggedMiddleware.lo
 routes.post('/painel-de-controle/editar-pacote-de-doacoes/:slug', isLoggedMiddleware.logged, isAdminMiddleware, apiController.updatedonatepackage);
 
 routes.post('/painel-de-controle/adicionar-itens-de-doacoes', isLoggedMiddleware.logged, isAdminMiddleware, apiController.createdonateitems);
-routes.post('/painel-de-controle/editar-item-de-doacoes', isLoggedMiddleware.logged, isAdminMiddleware, apiController.updatedonateitems);
+routes.post('/painel-de-controle/editar-item-de-doacoes/:slug', isLoggedMiddleware.logged, isAdminMiddleware, apiController.updatedonateitems);
 
 routes.get('/painel-de-controle/noticias', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.listnews);
 routes.get('/painel-de-controle/criar-noticia', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.news);
@@ -77,9 +77,12 @@ routes.get('/painel-de-controle/deletar-guia-do-jogo/:slug', isLoggedMiddleware.
 routes.get('/painel-de-controle/pacote-de-doacoes', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.donatepackages);
 routes.get('/painel-de-controle/criar-pacote-de-doacoes', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.createdonatepackages);
 routes.get('/painel-de-controle/editar-pacote-de-doacoes/:slug', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.updatedonatepackages);
+routes.get('/painel-de-controle/deletar-pacote-de-doacoes/:slug', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.deletedonatepackages);
 
 routes.get('/painel-de-controle/adicionar-itens-de-doacoes', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.createdonateitems);
 routes.get('/painel-de-controle/editar-item-de-doacoes/:slug', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.updatedonateitems);
+routes.get('/painel-de-controle/lista-itens-de-doacoes/:slug', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.listdonateitems);
+routes.get('/painel-de-controle/deletar-item-de-doacoes/:slug', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.deletedonateitems);
 
 //routes.get('/painel-de-controle', isLoggedMiddleware.notLogged, dashboardController.index);
 

@@ -1,7 +1,7 @@
 <div class="col-md-8 p-0 m-0">
     <div class="col-md-12 my-2">
         <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
-            Painel de controle - pacote de doações
+            Painel de controle - lista de itens de doações
         </div>
         <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4">
             <div class="col-md-12 my-1">
@@ -12,35 +12,27 @@
                 <table class="table table-dark table-hover">
                     <head>
                         <tr>
-                            <th>Nome</th>
-                            <th>Valor</th>
-                            <th>Cash</th>
+                            <th>Nome do Item</th>
+                            <th>ID do Item</th>
+                            <th>Efeitos</th>
                             <th>Data</th>
-                            <th>Itens</th>
                             <th colspan="3">Ações</th>
                         </tr>
                     </head>
                     <tbody>
                         <% for (let i = 0; i < data.rows.length; i++) { %>
                             <tr>
-                                <td><%= data.rows[i].name %></td>
-                                <td>
-                                    <%= new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(data.rows[i].value) %>
-                                </td>
-                                <td><%= data.rows[i].donate %></td>
+                                <td><%= data.rows[i].itemname %></td>
+                                <td><%= data.rows[i].item_id %></td>
+                                <td><%= `${data.rows[i].eff1}  ${data.rows[i].effv1} ${data.rows[i].eff2} ${data.rows[i].effv2} ${data.rows[i].eff3} ${data.rows[i].effv3}` %></td>
                                 <td class="time-ago"><%= data.rows[i].createdAt %></td>
                                 <td>
-                                    <a class="btn btn-primary" href="/painel-de-controle/lista-itens-de-doacoes/<%= data.rows[i].slug %>">
-                                        Lista de itens
-                                    </a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-warning" href="/painel-de-controle/editar-pacote-de-doacoes/<%= data.rows[i].slug %>">
+                                    <a class="btn btn-warning" href="/painel-de-controle/editar-item-de-doacoes/<%= data.rows[i].slug %>">
                                         Editar
                                     </a>
                                 </td>
                                 <td>
-                                    <a class="btn btn-danger" href="/painel-de-controle/deletar-pacote-de-doacoes/<%= data.rows[i].slug %>">
+                                    <a class="btn btn-danger" href="/painel-de-controle/deletar-item-de-doacoes/<%= data.rows[i].slug %>">
                                         Deletar
                                     </a>
                                 </td>

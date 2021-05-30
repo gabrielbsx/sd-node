@@ -583,3 +583,113 @@ exports.updatedonateitems = async (req, res, next) => {
         return res.redirect('/');
     }
 };
+
+exports.listdonateitems = async (req, res, next) => {
+    try {
+        const { slug } = req.params;
+
+        var { page } = req.query;
+        page = parseInt(page) || 1;
+        if (typeof page === 'undefined' || page < 1) {
+            page = 1;
+        }
+
+        const data = await donatepackagesModel.findOne({
+            where: {
+                slug: slug,
+            }
+        });
+
+        if (data) {
+            const donateitems = await donateitemsModel.findAndCountAll({
+                where: {
+                    id_package: data.id,
+                },
+                limit: 5,
+                offset: (page - 1) * 5 || 0,
+            });
+
+            return res.render('site/layouts/dashboard', {
+                page: 'listdonateitems',
+                data: donateitems,
+            });
+        } else {
+            req.flash('error', {
+                message: 'Pacote inexistente!',
+            });
+        }
+
+        return res.redirect('/painel-de-controle/pacote-de-doacoes');
+    } catch (err) {
+        return res.redirect('/');
+    }
+};
+
+exports.deletedonatepackages = async (req, res, next) => {
+    try {
+        const { slug } = req.params;
+
+        const package = await donatepackagesModel.findOne({
+            where: {
+                slug: slug,
+            },
+        });
+
+        if (package) {
+            if (await donateitemsModel.destroy({
+                where: {
+                    id_package: package.id,
+                },
+            })) {
+                if (await donatepackagesModel.destroy({
+                    where: {
+                        slug: slug,
+                    },
+                })) {
+                    req.flash('success', {
+                        message: 'Pacote de doação deletado com sucesso!',
+                    });
+                } else {
+                    req.flash('error', {
+                        message: 'Não foi possível deletar o pacote de doação!',
+                    });
+                }
+            } else {
+                req.flash('error', {
+                    message: 'Não foi possível deletar os itens contidos do pacote de doações!',
+                });   
+            }
+        } else {
+            req.flash('error', {
+                message: 'Pacote inexistente!',
+            });
+        }
+        return res.redirect('/painel-de-controle/pacote-de-doacoes');
+    } catch (err) {
+        return res.redirect('/');
+    }
+};
+
+exports.deletedonateitems = async (req, res, next) => {
+    try {
+        const { slug } = req.params;
+
+        if (await donateitemsModel.destroy({
+            where: {
+                slug: slug,
+            },
+        })) {
+            req.flash('success', {
+                message: 'Item deletado com sucesso do pacote!',
+            });
+        } else {
+            req.flash('error', {
+                message: 'Não foi possível deletar o item do pacote!',
+            });
+        }
+
+        return res.redirect('/painel-de-controle/pacote-de-doacoes');
+    } catch (err) {
+        return res.redirect('/');
+    }
+};
