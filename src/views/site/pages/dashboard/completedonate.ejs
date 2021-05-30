@@ -7,8 +7,11 @@
             <% if (typeof data !== 'undefined') { %>
                 <div class="col-md-12 row">
                     <div class="card col-md-12">
-                        <div class="card-body text-dark">
-                            <div class="card-text">
+                        <div class="card-body text-dark row">
+                            <div class="col-md-6 my-2">
+                                <img class="card-img-top bg-dark text-center mx-auto w-100" src="/public/template/images/gold.png" alt="">
+                            </div>
+                            <div class="card-text col-md-6">
                                 <div class="text-justify col-md-12">
                                     <h5 class="card-title">
                                         <%= data.donate_package.name %>
@@ -34,11 +37,11 @@
                                         </div>
                                     <% } %>
                                 </div>
-                                <div class="text-center mt-2 col-md-12">
-                                    <a target="_blank" href="<%= data.payment_url %>" class="btn btn-success">
-                                        Finalizar doação
-                                    </a>
-                                </div>
+                            </div>
+                            <div class="text-center mt-2 col-md-12">
+                                <a target="_blank" href="<%= data.payment_url %>" class="btn btn-success">
+                                    Finalizar doação
+                                </a>
                             </div>
                         </div>
                     </div>
