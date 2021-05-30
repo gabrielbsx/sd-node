@@ -251,6 +251,177 @@ exports.recoverynumericpassword = async (req, res, next) => {
     }
 };
 
+exports.createdonatepackage = async (req, res, next) => {
+    try {
+        const { name, slug, value, donate, percent } = req.body;
+
+        await donatepackageSchema
+            .tailor('createpackage')
+            .validateAsync({
+                slug: slug,
+                name: name,
+                value: value,
+                donate: donate,
+                percent: percent,
+            }, { abortEarly: false, });
+
+        const id = v4();
+
+        const data = await donatepackagesModel.create({
+            id: id,
+            slug: slug,
+            name: name,
+            value: value,
+            donate: donate,
+            percent: percent,
+        });
+
+        if (data) {
+            req.flash('success', {
+                message: 'Pacote de doação criado com sucesso!',
+            });
+        } else {
+            req.flash('error', {
+                message: 'Não foi possível adicionar pacote de doação!',
+            });
+        }
+        return res.redirect('/painel-de-controle/pacotes-de-doacoes');
+    } catch (err) {
+        req.flash('error', {
+            message: err.details || 'Erro interno!',
+        });
+        return res.redirect('/painel-de-controle/pacotes-de-doacoes');
+    }
+};
+
+
+//não necessário
+exports.createdonateitem = async (req, res, next) => {
+    try {
+        const { id_package, itemname, item_id, eff1, eff2, eff3, effv1, effv2, effv3 } = req.body;
+        var donateitems = {
+            id_package: id_package,
+            itemname: itemname,
+            item_id: item_id,
+            eff1: eff1,
+            eff2: eff2,
+            eff3: eff3,
+            effv1: effv1,
+            effv2: effv2,
+            effv3: effv3,
+        };
+        
+        await donateitemsSchema
+            .tailor('createitem')
+            .validateAsync(donateitems, { abortEarly: false, });
+        if (await donatepackagesModel.findOne({ where: { id: id_package } })) {
+            donateitems.id = v4();
+            if (await donateitemsModel.create(donateitems)) {
+                req.flash('success', {
+                    message: 'Bonificação criada com sucesso!',
+                });
+            } else {
+                req.flash('error', {
+                    message: 'Não foi possível criar a bonificação!',
+                });
+            }
+        } else {
+            req.flash('error', {
+                message: 'Pacote de doação inexistente!',
+            });
+        }
+        return res.redirect(`/painel-de-controle/lista-de-itens/${id_package}`);
+    } catch (err) {
+        const { id_package } = req.body;
+        req.flash('error', {
+            message: err.details || 'Erro interno!',
+        });
+        return res.redirect(`/painel-de-controle/lista-de-itens/${id_package}`);
+    }
+};
+
+exports.updatedonatepackage = async (req, res, next) => {
+    try {
+        const { slug } = req.params;
+        const { name, value, donate, percent } = req.body;
+
+        const nSlug = req.body.slug;
+
+        var donatepackage = {
+            slug: nSlug,
+            name: name,
+            value: value,
+            donate: donate,
+            percent: percent,
+        };
+
+        await donatepackageSchema
+            .tailor('updatepackage')
+            .validateAsync(donatepackage, { abortEarly: false, });
+
+        if (await donatepackagesModel.update(donatepackage, {
+            where: {
+                slug: slug
+            }
+        })) {
+            req.flash('success', {
+                message: 'Pacote de doação atualizado com sucesso!',
+            });
+            return res.redirect(`/painel-de-controle/editar-pacote-de-doacoes/${nSlug}`);
+        } else {
+            req.flash('error', {
+                message: 'Não foi possível atualizar o pacote de doação!',
+            });
+        }
+        return res.redirect(`/painel-de-controle/editar-pacote-de-doacoes/${nSlug}`);
+    } catch (err) {
+        req.flash('error', {
+            message: err.details || 'Erro interno!',
+        });
+        return res.redirect('/painel-de-controle/pacote-de-doacoes');
+    }
+};
+
+exports.updatedonateitems = async (req, res, next) => {
+    try {
+        const { slug, id_package, itemname, item_id, eff1, eff2, eff3, effv1, effv2, effv3 } = req.body;
+        var donateitems = {
+            slug: slug,
+            id_package: id_package,
+            itemname: itemname,
+            item_id: item_id,
+            eff1: eff1,
+            eff2: eff2,
+            eff3: eff3,
+            effv1: effv1,
+            effv2: effv2,
+            effv3: effv3,
+        };
+        await donateitemsSchema.validateAsync(donateitems, { abortEarly: false, });
+        if (await donatepackagesModel.findOne({ where: { id: id_package }})) {
+            if (await donateitemsModel.update(donateitems, { where: { slug: slug }})) {
+                req.flash('success', {
+                    message: 'Bonificação atualizada com sucesso!',
+                });
+            } else {
+                req.flash('error', {
+                    message: 'Não foi possível atualizar a bonificação!',
+                });
+            }
+        } else {
+            req.flash('error', {
+                message: 'Pacote de doação inexistente!',
+            });
+        }
+        return res.redirect(`/painel-de-controle/lista-de-itens/${id_package}`);
+    } catch (err) {
+        req.flash('error', {
+            message: err.details || 'Erro interno!',
+        });
+        return res.redirect('/painel-de-controle/pacotes-de-doacao');
+    } 
+};
+
 exports.picpay = async (req, res, next) => {
     try {
         const { key, token } = await paymentGatewayModel.findOne({
@@ -573,37 +744,42 @@ exports.createdonateitems = async (req, res, next) => {
         });
 
         if (!slugExists) {
-            const donateitems = await donateitemsModel.create({
-                id: id,
-                id_package: id_package,
-                itemname: itemname,
-                slug: slug,
-                item_id: item_id,
-                eff1: eff1,
-                effv1: effv1,
-                eff2: eff2,
-                effv2: effv2,
-                eff3: eff3,
-                effv3: effv3,
-            });
-    
-            if (donateitems) {
-                req.flash('success', {
-                    message: 'Item de doação criado com sucesso!',
+            if (await donatepackagesModel.findOne({ where : { id: id_package }})) {
+                const donateitems = await donateitemsModel.create({
+                    id: id,
+                    id_package: id_package,
+                    itemname: itemname,
+                    slug: slug,
+                    item_id: item_id,
+                    eff1: eff1,
+                    effv1: effv1,
+                    eff2: eff2,
+                    effv2: effv2,
+                    eff3: eff3,
+                    effv3: effv3,
                 });
+        
+                if (donateitems) {
+                    req.flash('success', {
+                        message: 'Item de doação criado com sucesso!',
+                    });
+                } else {
+                    req.flash('error', {
+                        message: 'Não foi possível criar o item de doação!',
+                    });
+                }
             } else {
                 req.flash('error', {
-                    message: 'Não foi possível criar o item de doação!',
+                    message: 'Pacote inexistente!',
                 });
             }
-    
         } else {
             req.flash('error', {
                 message: 'Slug existente!',
             });
         }
         
-        return res.redirect('/painel-de-controle/pacote-de-doacoes');
+        return res.redirect('/painel-de-controle/criar-pacote-de-doacoes');
     } catch (err) {
         req.flash('error', {
             message: err.details || 'Erro interno!',

@@ -561,3 +561,25 @@ exports.createdonateitems = async (req, res, next) => {
         return res.redirect('/');
     }
 };
+
+exports.updatedonateitems = async (req, res, next) => {
+    try {
+        const { slug } = req.params;
+
+        const data = await donateitemsModel.findOne({
+            where: {
+                slug: slug,
+            },
+        });
+
+        const packages = await donatepackagesModel.findAll();
+
+        return res.render('site/layouts/dashboard', {
+            page: 'updatedonateitems',
+            data: data,
+            packages: packages,
+        });
+    } catch (err) {
+        return res.redirect('/');
+    }
+};

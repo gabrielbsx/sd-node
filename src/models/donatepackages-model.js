@@ -4,11 +4,27 @@ const { Model, DataTypes } = require('sequelize');
 class DonatePackages extends Model {
   static init(sequelize) {
     super.init({
-        name: DataTypes.STRING(100),
-        slug: DataTypes.STRING(100),
-        percent: DataTypes.INTEGER.UNSIGNED,
-        value: DataTypes.INTEGER.UNSIGNED,
-        donate: DataTypes.INTEGER.UNSIGNED,
+        name: {
+          type: DataTypes.STRING(100),
+          allowNull: false,
+        },
+        slug: {
+          type: DataTypes.STRING(100),
+          allowNull: false,
+          unique: true,
+        },
+        percent: {
+          type: DataTypes.INTEGER.UNSIGNED,
+          allowNull: false,
+        },
+        value: {
+          type: DataTypes.INTEGER.UNSIGNED,
+          allowNull: false,
+        },
+        donate: {
+          type: DataTypes.INTEGER.UNSIGNED,
+          allowNull: false,
+        },
     }, {
       sequelize,
       modelName: 'donate_packages'

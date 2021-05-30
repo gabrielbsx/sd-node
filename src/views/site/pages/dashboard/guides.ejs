@@ -17,7 +17,7 @@
                         </tr>
                     </head>
                     <tbody>
-                        <% for (let i = 0; i < data.count; i++) { %>
+                        <% for (let i = 0; i < data.rows.length; i++) { %>
                             <tr>
                                 <td><%= data.rows[i].title %></td>
                                 <td class="time-ago"><%= data.rows[i].createdAt %></td>

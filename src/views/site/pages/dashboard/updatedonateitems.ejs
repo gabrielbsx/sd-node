@@ -1,0 +1,49 @@
+<div class="col-md-8 p-0 m-0">
+    <div class="col-md-12 my-2">
+        <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
+            Painel de controle - editar item de doações
+        </div>
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4 px-5">
+            <% if (typeof data !== 'undefined') { %>
+                <form method="post" action="/painel-de-controle/editar-item-de-doacoes/<%= data.slug %>">
+                    <div class="form-group">
+                        <input name="itemname" type="text" class="form-control" placeholder="Nome do item" value="<%= data.itemname %>">
+                    </div>
+                    <div class="form-group">
+                        <input name="slug" type="text" class="form-control" placeholder="Slug" value="<%= data.slug %>">
+                    </div>
+                    <div class="form-group">
+                        <input name="item_id" type="text" class="form-control" placeholder="Item ID" value="<%= data.item_id %>">
+                    </div>
+                    <div class="form-group">
+                        <input name="eff1" type="text" class="form-control" placeholder="Efeito 01" value="<%= data.eff1 %>">
+                    </div>
+                    <div class="form-group">
+                        <input name="effv1" type="text" class="form-control" placeholder="Valor Efeito 01" value="<%= data.effv1 %>">
+                    </div>
+                    <div class="form-group">
+                        <input name="eff2" type="text" class="form-control" placeholder="Efeito 02" value="<%= data.eff2 %>">
+                    </div>
+                    <div class="form-group">
+                        <input name="effv2" type="text" class="form-control" placeholder="Valor Efeito 02" value="<%= data.effv2 %>">
+                    </div>
+                    <div class="form-group">
+                        <input name="eff3" type="text" class="form-control" placeholder="Efeito 03" value="<%= data.eff3 %>">
+                    </div>
+                    <div class="form-group">
+                        <input name="effv3" type="text" class="form-control" placeholder="Valor Efeito 03" value="<%= data.effv3 %>">
+                    </div>
+                    <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                    <input type="hidden" name="action" value="validate_captcha">
+                    <div class="form-group">
+                        <button class="btn btn-primary">
+                            Editar
+                        </button>
+                    </div>
+                </form>
+            <% } else { %>
+                Não encontrada!
+            <% } %>
+        </div>
+    </div>
+</div>

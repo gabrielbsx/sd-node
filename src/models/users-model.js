@@ -5,12 +5,31 @@ class Users extends Model {
   static init(sequelize) {
     super.init(
       {
-        name: DataTypes.STRING(50),
-        username: DataTypes.STRING(12),
-        password: DataTypes.STRING(60),
-        email: DataTypes.STRING(100),
-        access: DataTypes.INTEGER(1),
-        status: DataTypes.INTEGER(1),
+        name: {
+          type: DataTypes.STRING(50),
+          allowNull: false,
+        },
+        username: {
+          type: DataTypes.STRING(12),
+          unique: true,
+          allowNull: false,
+        },
+        password: {
+          type: DataTypes.STRING(60),
+          allowNull: false,
+        },
+        email: {
+          type: DataTypes.STRING(100),
+          allowNull: false,
+        },
+        access: {
+          type: DataTypes.INTEGER(1),
+          allowNull: false,
+        },
+        status: {
+          type: DataTypes.INTEGER(1),
+          allowNull: false,
+        },
       },
       {
         sequelize,
