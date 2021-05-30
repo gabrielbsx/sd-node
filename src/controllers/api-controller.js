@@ -79,6 +79,7 @@ exports.register = async (req, res, next) => {
         }
         return res.redirect('/cadastrar');
     } catch (err) {
+        console.log(err);
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
