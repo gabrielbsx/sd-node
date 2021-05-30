@@ -1,0 +1,48 @@
+<div class="col-md-8 p-0 m-0">
+    <div class="col-md-12 my-2">
+        <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
+            Painel de controle - doação
+        </div>
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4 px-5">
+            <% if (typeof data !== 'undefined') { %>
+                <div class="text-justify mb-4">
+                    <div class="my-3">
+                        Doação é o contrato por meio do qual uma pessoa/doador, por liberalidade,
+                        transfere do seu patrimônio bens ou vantagens para outro (donatário).
+                    </div>
+                    <div class="my-3">
+                        O contrato de doação é instituto típico do direito privado, sendo disciplinado
+                        pelo Código Civil (lei Federal nº 10.406/2012) entre os artigos 538 a 554.
+                    </div>
+                    <div class="my-3">
+                        A doação em geral, é formal ou solene, a lei impõe a forma escrita por instrumento
+                        público ou particular, a não ser que se trate de bens móveis e de pequeno valor,
+                        que podem ser doados de maneira verbal.
+                    </div>
+                    <div class="my-3">
+                        Dado a ciência dos parágrafos acima, a equipe do Spirit Destiny, como forma de agradecimento,
+                        pela contribuição dos doadores, estaremos bonificando os mesmos, assim sendo,
+                        na página anterior há discriminado os valores e suas respectivas bonificações.
+                    </div>
+                    <div class="my-3">
+                        A equipe Spirit Destiny não obrigará nenhuma pessoa a efetuar doação ou quaisquer outra forma de contribuição ao projeto.
+                    </div>
+                    <div class="my-3">
+                        Não responsabilizamos por doações ofertadas e efetuadas externas a plataforma oficial do Spirit Destiny.
+                        Informe-se com a staff e certifique-se de que está realmente efetuando a doação no local certo.
+                    </div>
+                </div>
+                <form method="post" action="/painel-de-controle/criar-doacao">
+                    <input type="hidden" name="id_package" value="<%= data.id %>">
+                    <div class="form-group">
+                        <button class="btn btn-primary">
+                            Doar
+                        </button>
+                    </div>
+                </form>
+            <% } else { %>
+                Não encontrada!
+            <% } %>
+        </div>
+    </div>
+</div>

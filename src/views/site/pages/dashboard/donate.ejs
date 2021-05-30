@@ -4,7 +4,52 @@
             Painel de controle - doações
         </div>
         <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4">
-            Manutenção
+            <% if (data.count > 0) { %>
+                <div class="col-md-12 p-0 m-0 row">
+                    <% for (let i = 0; i < data.rows.length; i++) { %>
+                        <div class="col-md-4 p-0">
+                            <div class="card">
+                                <img class="card-img-top bg-dark text-center mx-auto w-100" src="/public/template/images/gold.png" alt="">
+                                <div class="card-body bg-light text-dark">
+                                    <div class="card-text">
+                                        <div class="text-left col-md-12">
+                                            <h5 class="card-title">
+                                                <%= data.rows[i].name %>
+                                            </h5>
+                                        </div>
+                                        <div class="text-left col-md-12">
+                                            Valor: <%= new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(data.rows[i].value) %>
+                                        </div>
+                                        <div class="text-left col-md-12">
+                                            Donate: <%= data.rows[i].donate %>
+                                        </div>
+                                        <div class="text-left col-md-12">
+                                            Bônus: <%= data.rows[i].percent %>%
+                                        </div>
+                                        <div class="text-left col-md-12">
+                                            Valor c/ bônus: <%= (data.rows[i].donate + (data.rows[i].donate * data.rows[i].percent)) %>
+                                        </div>
+                                        <div class="text-left col-md-12">
+                                            Itens:
+                                            <% for (let j = 0; j < data.rows[i].donate_items.length; j++) { %>
+                                                <div class="col-md-12 bg-light text-dark my-1">
+                                                    <%= data.rows[i].donate_items[j].itemname %>
+                                                </div>
+                                            <% } %>
+                                        </div>
+                                        <div class="text-center mt-2 col-md-12">
+                                            <a href="/painel-de-controle/doar/<%= data.rows[i].slug %>" class="btn btn-success">
+                                                Picpay
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+                <%- include('../../partials/pagination.ejs') %>
+            <% } %>
         </div>
     </div>
 </div>

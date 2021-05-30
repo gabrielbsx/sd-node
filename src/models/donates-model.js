@@ -12,6 +12,10 @@ class Donates extends Model {
           type: DataTypes.UUIDV4,
           allowNull: false,
         },
+        state: {
+          type: DataTypes.INTEGER.UNSIGNED,
+          allowNull: false,
+        },
     }, {
       sequelize,
       modelName: 'donates'

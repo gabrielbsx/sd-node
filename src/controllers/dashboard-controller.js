@@ -5,6 +5,7 @@ const guidesModel = require('../models/guides-model');
 const guideArticlesModel = require('../models/guidearticles-model');
 const newsModel = require('../models/news-model');
 const usersModel = require('../models/users-model');
+const donatesModel = require('../models/donates-model');
 
 exports.index = async (req, res, next) => {
     try {
@@ -509,7 +510,7 @@ exports.donate = async (req, res, next) => {
         });
 
         return res.render('site/layouts/dashboard', {
-            page: 'donatepackages',
+            page: 'donate',
             data: data,
         });
     } catch (err) {
@@ -689,6 +690,67 @@ exports.deletedonateitems = async (req, res, next) => {
         }
 
         return res.redirect('/painel-de-controle/pacote-de-doacoes');
+    } catch (err) {
+        return res.redirect('/');
+    }
+};
+
+exports.purchase = async (req, res, next) => {
+    try {
+        const { slug } = req.params;
+
+        const data = await donatepackagesModel.findOne({
+            where: {
+                slug: slug,
+            },
+        });
+
+        if (!data) {
+            req.flash('error', {
+                message: 'Não foi possível encontrar o pacote de doação!',
+            });
+        }
+
+        return res.render('site/layouts/dashboard', {
+            page: 'purchase',
+            data: data,
+        });
+    } catch (err) {
+        return res.redirect('/');
+    }
+};
+
+exports.historydonate = async (req, res, next) => {
+    try {
+        var { page } = req.query;
+        page = parseInt(page) || 1;
+        if (typeof page === 'undefined' || page < 1) {
+            page = 1;
+        }
+        
+        const donate = await donatesModel.findAndCountAll({
+            where: {
+                id_user: req.session.user.id,
+            },
+            limit: 5,
+            offset: (page - 1) * 5 || 0,
+            include: [
+                {
+                    model: donatepackagesModel,
+                    include: [{
+                        model: donateitemsModel,
+                    }],
+                },
+                {
+                    model: usersModel,
+                },
+            ],
+        });
+
+        return res.render('site/layouts/dashboard', {
+            page: 'historydonate',
+            data: donate,
+        });
     } catch (err) {
         return res.redirect('/');
     }

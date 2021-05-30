@@ -1,0 +1,38 @@
+<div class="col-md-8 p-0 m-0">
+    <div class="col-md-12 my-2">
+        <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
+            Painel de controle - histórico de doações
+        </div>
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4 px-5">
+            <% if (typeof data !== 'undefined') { %>
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>Pacote</th>
+                            <th>Valor</th>
+                            <th>Donate</th>
+                            <th>Bônus</th>
+                            <th>Donate c/ Bônus</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let i = 0; i < data.rows.length; i++) { %>
+                            <tr>
+                                <td><%= data.rows[i].name %></td>
+                                <td><%= new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(data.rows[i].value) %></td>
+                                <td><%= data.rows[i].donate %></td>
+                                <td><%= data.rows[i].percent %></td>
+                                <td><%= (data.rows[i].donate + (data.rows[i].donate * data.rows[i].percent)) %></td>
+                                <td><%= data.rows[i]. %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <%- include('../../partials/pagination.ejs') %>
+            <% } else { %>
+                Não há doações!
+            <% } %>
+        </div>
+    </div>
+</div>
