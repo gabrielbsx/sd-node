@@ -95,6 +95,7 @@ routes.get('/painel-de-controle/finalizar-doacao/:id', isLoggedMiddleware.logged
 
 routes.get('/painel-de-controle/sistema-de-pagamentos', isLoggedMiddleware.logged, dashboardController.paymentsystem);
 routes.get('/likes/:slug', apiController.likes);
+routes.post('/comentar/:slug', isLoggedMiddleware.logged, apiController.comment);
 
 routes.use(errorController.error404);
 

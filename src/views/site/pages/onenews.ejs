@@ -9,7 +9,10 @@
                     <div class="mx-3">
                         <a id="add-like" class="btn btn-danger py-0"><span class="font-weight-bold">&hearts;</span> Likes <span id="like-increment"><%= data.likes %></span></a>
                     </div>
-                    <div class="fb-share-button" data-href="https://spirit-destiny.com/noticia/<%= data.slug %>" data-layout="button_count" loading="lazy" size="large">
+                    <div class="mx-3">
+                        <span class="btn btn-secondary py-0">Comentários <%= data.news_comments.length %></span>
+                    </div>
+                    <div class="mx-3 py-0 fb-share-button" data-href="https://spirit-destiny.com/noticia/<%= data.slug %>" data-layout="button_count" loading="lazy" size="large">
                     </div>
                 </div>
         </div>
@@ -25,14 +28,29 @@
                 </span>
             </div>
         </div>
-        <div class="col-md-12 row m-0 mt-2 p-0">
+        <div class="col-md-12 row m-0 mt-3 p-0">
             <div class="col-md-12 text-center bg-light border-bottom py-2">
                 Comentários
             </div>
             <div class="py-2 col-md-12 text-justify bg-white">
                 <% if (data.news_comments.length > 0) { %>
-                    <div class="col-md-12 mx-0 mb-2 mt-0 p-3 rounded border row">
-                    </div>
+                    <% for (let i = 0; i < data.news_comments.length; i++) { %>
+                        <div class="col-md-12 mx-0 mb-2 mt-0 p-3 rounded border row">
+                            <div class="col-md-12 py-2 border-bottom">
+                                <%- data.news_comments[i].comment %>
+                            </div>
+                            <div class="col-md-12 mt-3 row mx-0">
+                                <div class="col-md-6 text-left justify-content-right">
+                                    <div class="mx-3">
+                                        <a id="add-like-comment" class="btn btn-danger text-light py-0 <%= data.news_comments[i].id %>"><span class="font-weight-bold">&hearts;</span> Likes <span id="like-increment-comment" class="<%= data.news_comments[i].id %>"><%= data.news_comments[i].likes %></span></a>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-right justify-content-right">
+                                    Autor: <%= data.news_comments[i].user.name %>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
                 <% } else { %>
                     <div class="col-md-12 mx-0 mb-2 mt-0 p-3 text-center rounded border row justify-content-center">
                         Seja o primeiro a comentar!

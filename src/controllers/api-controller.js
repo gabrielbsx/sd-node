@@ -22,6 +22,7 @@ const Game = new (require('../helpers/game'))();
 const bcrypt = require("bcryptjs");
 const { v4 } = require('uuid');
 const axios = require('axios');
+const newsCommentsModel = require('../models/newscomments-model');
 
 exports.register = async (req, res, next) => {
     try {
@@ -998,4 +999,50 @@ exports.likes = async (req, res, next) => {
             status: 'error',
         });
     }
-}
+};
+
+exports.comment = async (req, res, next) => {
+    try {
+        const { slug } = req.params;
+
+        const {
+            comment,
+        } = req.body;
+
+        const news = await newsModel.findOne({
+            where: {
+                slug: slug,
+            },
+        });
+
+        if (news) {
+            const id = v4();
+            const data = await newsCommentsModel.create({
+                id: id,
+                comment: comment,
+                likes: 0,
+                id_user: req.session.user.id,
+                id_news: news.id,
+            });
+
+            if (data) {
+                req.flash('success', {
+                    message: 'Comentado com sucesso!',
+                });
+            } else {
+                req.flash('error', {
+                    message: 'Não foi possível comentar!',
+                });
+            }
+        } else {
+            req.flash('error', {
+                message: 'Notícia inexistente!',
+            });
+        }
+
+        return res.redirect(`/noticia/${slug}`);
+    } catch(err) {
+        console.log(err);
+        return res.redirect('/');
+    }
+};

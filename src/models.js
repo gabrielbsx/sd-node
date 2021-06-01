@@ -45,6 +45,7 @@ newsModel.belongsTo(userModel, { foreignKey: 'id_user' });
 newsModel.hasMany(newsCommentsModel, { foreignKey: 'id_news' });
 
 newsCommentsModel.belongsTo(newsModel, { foreignKey: 'id_news' });
+newsCommentsModel.belongsTo(userModel, { foreignKey: 'id_user' });
 
 guidesModel.belongsTo(userModel, { foreignKey: 'id_user' });
 guidesModel.hasMany(guideArticlesModel, { foreignKey: 'id_guide' });

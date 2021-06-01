@@ -1,6 +1,7 @@
 const axios = require('axios');
 const newsModel = require('../models/news-model');
 const newsCommentsModel = require('../models/newscomments-model');
+const usersModel = require('../models/users-model');
 
 exports.index = async (req, res, next) => {
     try {
@@ -130,13 +131,13 @@ exports.onenews = async (req, res, next) => {
             where: {
                 slug: slug,
             },
-            include: [
-                {
-                    model: newsCommentsModel,
-                }
-            ],
+            include: [{
+                model: newsCommentsModel,
+                include: [{
+                    model: usersModel,
+                }],
+            }],
         });
-        
 
         if (data) {
             return res.render('site/layouts/portal', {
