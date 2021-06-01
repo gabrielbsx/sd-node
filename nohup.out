@@ -1,0 +1,11 @@
+yarn run v1.22.10
+$ node src/server.js
+Server is running on http://localhost:3000
+yarn run v1.22.10
+$ node src/server.js
+Server is running on http://localhost:3000
+[0mGET /favicon.ico [32m200[0m 23.270 ms - -[0m
+Executing (default): SELECT count(*) AS `count` FROM `news` AS `news`;
+Executing (default): SELECT `id`, `title`, `slug`, `content`, `category`, `id_user`, `created_at` AS `createdAt`, `updated_at` AS `updatedAt` FROM `news` AS `news` LIMIT 0, 5;
+[0mGET / [32m200[0m 91.700 ms - -[0m
+[0mGET /public/template/images/sd.png [32m200[0m 6.110 ms - 66774[0m

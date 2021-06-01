@@ -2,7 +2,13 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-     return await queryInterface.createTable('news', {
+    /**
+     * Add altering commands here.
+     *
+     * Example:
+     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
+     */
+    return await queryInterface.createTable('news_comments', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -10,25 +16,16 @@ module.exports = {
         unique: true,
         primaryKey: true,
       },
-      title: {
-        type: Sequelize.STRING(100),
-        allowNull: false,
-      },
-      slug: {
-        type: Sequelize.STRING(100),
-        allowNull: false,
-        unique: true,
-      },
-      content: {
-        type: Sequelize.TEXT,
-        allowNull: false,
-      },
       id_user: {
         type: Sequelize.UUID,
         allowNull: false,
       },
-      category: {
-        type: Sequelize.INTEGER(1),
+      id_news: {
+        type: Sequelize.UUID,
+        allowNull: false,
+      },
+      comment: {
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       likes: {
@@ -47,6 +44,12 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return await queryInterface.dropTable('news');
+    /**
+     * Add reverting commands here.
+     *
+     * Example:
+     * await queryInterface.dropTable('users');
+     */
+    return await queryInterface.dropTable('news_comments');
   }
 };

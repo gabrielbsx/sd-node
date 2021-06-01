@@ -489,24 +489,31 @@ exports.createnews = async (req, res, next) => {
         });
 
         if (!slugExists) {
-            const id = v4();
-
-            const news = await newsModel.create({
-                id: id,
-                title: title,
-                slug: slug,
-                content: content,
-                category: category,
-                id_user: req.session.user.id,
-            });
+            if (category > 0 && category < 6) {
+                const id = v4();
     
-            if (news) {
-                req.flash('success', {
-                    message: 'Notícia criada com sucesso!',
+                const news = await newsModel.create({
+                    id: id,
+                    title: title,
+                    slug: slug,
+                    content: content,
+                    category: category,
+                    likes: 0,
+                    id_user: req.session.user.id,
                 });
+        
+                if (news) {
+                    req.flash('success', {
+                        message: 'Notícia criada com sucesso!',
+                    });
+                } else {
+                    req.flash('error', {
+                        message: 'Não foi possível criar uma notícia!',
+                    });
+                }
             } else {
                 req.flash('error', {
-                    message: 'Não foi possível criar uma notícia!',
+                    message: 'Categoria inválida!',
                 });
             }
         } else {
@@ -944,3 +951,51 @@ exports.createdonate = async (req, res, next) => {
         return res.redirect('/painel-de-controle/doacoes');
     }
 };
+
+exports.likes = async (req, res, next) => {
+    try {
+        const { slug } = req.params;
+
+        var status = 'error';
+        var likes = null;
+        var message = '';
+
+        if (typeof req.session.user !== 'undefined') {
+            const news = await newsModel.findOne({
+                where: {
+                    slug: slug,
+                },
+            });
+    
+            if (news) {
+                likes = news.likes + 1;
+    
+                if (await news.update({
+                    likes: likes,
+                }, {
+                    where: {
+                        slug: slug,
+                    },
+                })) {
+                    status = 'success';
+                    message = `Você curtiu a postagem ${news.title}`;
+                } else {
+                    message = 'Não foi possível curtir esta notícia!';
+                }
+            } else {
+                message = 'Notícia inexistente!';
+            }
+        } else {
+            message = 'Efetue o login para curtir!';
+        }
+        return res.json({
+            status: status,
+            likes: likes,
+            message: message,
+        });
+    } catch(err) {
+        return res.json({
+            status: 'error',
+        });
+    }
+}

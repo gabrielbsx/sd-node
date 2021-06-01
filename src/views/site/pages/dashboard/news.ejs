@@ -1,3 +1,4 @@
+<% const category = ['Novidade', 'Patchlist', 'Manutenção', 'Nota', 'Evento']; %>
 <div class="col-md-8 p-0 m-0">
     <div class="col-md-12 my-2">
         <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
@@ -21,7 +22,7 @@
                         <% for (let i = 0; i < data.rows.length; i++) { %>
                             <tr>
                                 <td><%= data.rows[i].title %></td>
-                                <td><%= data.rows[i].category %></td>
+                                <td><%= category[data.rows[i].category - 1] %></td>
                                 <td class="time-ago"><%= data.rows[i].createdAt %></td>
                                 <td>
                                     <a class="btn btn-warning" href="/painel-de-controle/editar-noticia/<%= data.rows[i].slug %>">

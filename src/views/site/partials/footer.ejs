@@ -50,10 +50,19 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
 <script src="https://momentjs.com/downloads/moment.min.js"></script>
 <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+    tinymce.init({
+        selector: 'textarea',
+        plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+        toolbar_mode: 'floating',
+    });
+</script>
+<script>
+    const url = window.location.href;
+
     moment.locale('pt-br');
     $('.message').delay(1 * 60 * 60).hide('slow');
     
@@ -62,7 +71,6 @@
             grecaptcha.execute("<%= recaptcha_site %>", {
                 action: "validate_recaptcha"
             }).then(function (token) {
-                console.log(token);
                 if ($(".g-recaptcha-response").length) {
                     $.each($(".g-recaptcha-response"), (index, value) => {
                         value.value = token;
@@ -79,6 +87,26 @@
 
     $(document).ready(async () => {
         await setrecaptcha();
+
+        $('#add-like').on('click', async () => {
+            //$.get('https://spirit-destiny.com/')
+            const like = url.replace('/noticia/', '/likes/');
+
+            $.ajax({
+                method: 'GET',
+                url: like,
+                success: async (response) => {
+                    if (response.status === 'success') {
+                        const likes = $('#like-increment');
+                        var i = parseInt(likes.text()) + 1;
+                        likes.text(i.toString());
+                    } else {
+                        alert(response.message);
+                    }
+                },
+            })
+        });
+
     });
 </script>
 

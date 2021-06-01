@@ -25,6 +25,10 @@ class News extends Model {
           type: DataTypes.UUIDV4,
           allowNull: false,
         },
+        likes: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+        }
     }, {
       sequelize,
       modelName: 'news'

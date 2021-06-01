@@ -1,8 +1,20 @@
 const axios = require('axios');
+const newsModel = require('../models/news-model');
+const newsCommentsModel = require('../models/newscomments-model');
 
 exports.index = async (req, res, next) => {
     try {
+        var { page } = req.query;
+        page = parseInt(page) || 1;
+        if (typeof page === 'undefined' || page < 1) {
+            page = 1;
+        }
+        const data = await newsModel.findAndCountAll({
+            limit: 5,
+            offset: (page - 1) * 5 || 0,
+        });
         return res.render('site/layouts/portal', {
+            data: data,
             page: 'home',
         });
     } catch (err) {
@@ -109,3 +121,39 @@ exports.recovery = async (req, res, next) => {
         });
     }
 };
+
+exports.onenews = async (req, res, next) => {
+    try {
+        const { slug } = req.params;
+
+        const data = await newsModel.findOne({
+            where: {
+                slug: slug,
+            },
+            include: [
+                {
+                    model: newsCommentsModel,
+                }
+            ],
+        });
+        
+
+        if (data) {
+            return res.render('site/layouts/portal', {
+                page: 'onenews',
+                data: data,
+            });
+        } else {
+            req.flash('error', {
+                message: 'Notícia inexistente!',
+            });
+        }
+
+        return res.redirect('/');
+    } catch(err) {
+        console.log(err);
+        return res.render('site/layouts/portal', {
+            page: '500',
+        });
+    }
+}

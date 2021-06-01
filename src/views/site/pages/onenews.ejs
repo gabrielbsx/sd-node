@@ -1,0 +1,61 @@
+<div class="col-md-8 p-0">
+    <div class="col-md-12 my-4">
+        <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
+            <%= data.title %>
+        </div>
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light px-4 py-4">
+            <%- data.content %>
+                <div class="col-md-12 row text-center mx-auto justify-content-center my-1">
+                    <div class="mx-3">
+                        <a id="add-like" class="btn btn-danger py-0"><span class="font-weight-bold">&hearts;</span> Likes <span id="like-increment"><%= data.likes %></span></a>
+                    </div>
+                    <div class="fb-share-button" data-href="https://spirit-destiny.com/noticia/<%= data.slug %>" data-layout="button_count" loading="lazy" size="large">
+                    </div>
+                </div>
+        </div>
+        <div class="col-md-12 py-2 row m-0 bg-warning text-dark">
+            <div class="text-left col-md-6">
+                <span class="h6">
+                    Equipe Spirit Destiny
+                </span>
+            </div>
+            <div class="text-right col-md-6">
+                <span class="h6 text-lowercase time-ago">
+                    <%= data.createdAt %>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-12 row m-0 mt-2 p-0">
+            <div class="col-md-12 text-center bg-light border-bottom py-2">
+                Comentários
+            </div>
+            <div class="py-2 col-md-12 text-justify bg-white">
+                <% if (data.news_comments.length > 0) { %>
+                    <div class="col-md-12 mx-0 mb-2 mt-0 p-3 rounded border row">
+                    </div>
+                <% } else { %>
+                    <div class="col-md-12 mx-0 mb-2 mt-0 p-3 text-center rounded border row justify-content-center">
+                        Seja o primeiro a comentar!
+                    </div>
+                <% } %>
+                <div class="col-md-12 mx-0 my-2 p-3 text-center rounded border row justify-content-center">
+                    <% if (typeof user === 'object') { %>
+                        <form method="POST" action="/comentar/<%= data.slug %>">
+                            <div class="form-group">
+                                <textarea name="comment"></textarea>
+                            </div>
+                            <div class="form-group text-center">
+                                <button class="btn btn-primary">
+                                    Comentar
+                                </button>
+                            </div>
+                        </form>
+                    <% } else { %>
+                        Faça o login para comentar!
+                    <% } %>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

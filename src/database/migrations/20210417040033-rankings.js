@@ -14,27 +14,27 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
       },
-      name: {
+      nick: {
         type: Sequelize.STRING(50),
         allowNull: false,
       },
-      classe: {
+      _class: {
         type: Sequelize.INTEGER(2),
         allowNull: false,
       },
-      ev: {
+      level: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      medal: {
+      guildlevel: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      power: {
+      guild: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      ban: {
+      kingdom: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
@@ -42,25 +42,9 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      hasSub: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
-      sub_level: {
+      evolution: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
-        defaultValue: 0,
-      },
-      sub_class: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
-        defaultValue: 0,
-      },
-      sub_face: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false,
-        defaultValue: 1,
       },
       created_at: {
         type: Sequelize.DATE,

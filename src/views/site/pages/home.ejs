@@ -1,10 +1,48 @@
+<%
+    const thumb = [
+        'https://i.imgur.com/GkANEHT.jpg',
+        'https://i.imgur.com/HxLtGD0.jpg',
+        'https://i.imgur.com/iLpuGgX.jpg',
+        'https://i.imgur.com/LNVNm2q.jpg',
+        'https://i.imgur.com/FcTSBy9.jpg',
+    ];
+%>
+
 <div class="col-md-8 p-0">
     <div class="col-md-12 my-4">
         <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
             Notícias
         </div>
         <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4">
-            Manutenção
+            <% if (typeof data !== 'undefined') { %>
+                <% for (let i = 0; i < data.rows.length; i++) { %>
+                    <div class="col-md-12 mb-2 py-2">
+                        <div class="col-md-12 row m-0">
+                            <div class="col-md-4 p-0 m-0">
+                                <img class="w-100 border border-dark h-100" src="<%= thumb[data.rows[i].category - 1] %>">
+                            </div>
+                            <div class="col-md-8 p-0 border-bottom border-top border-right bg-light text-dark">
+                                <div class="col-md-12 pt-2 bg-light font-weight-bold">
+                                    <%= data.rows[i].title %>
+                                </div>
+                                <div class="col-md-12 pb-2 bg-light border-bottom">
+                                    <span class="time-ago font-weight-light"><%= data.rows[i].createdAt %></span>
+                                </div>
+                                <div class="col-md-12 my-1">
+                                    <%- data.rows[i].content.substring(0, 100).replaceAll('<p>', '').replaceAll('</p>', '') %>...
+                                    <div class="">
+                                        <a class="col-md-12" href="/noticia/<%= data.rows[i].slug %>">
+                                            Ler mais
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <% } %>
+                <%- include('../partials/pagination.ejs') %>
+            <% } %>
         </div>
     </div>
 </div>

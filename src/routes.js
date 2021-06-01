@@ -27,6 +27,7 @@ routes.get('/guia-do-jogo', portalController.guides);
 routes.get('/ranking', portalController.ranking);
 routes.get('/ranking-de-jogadores', portalController.rankingplayers);
 routes.get('/ranking-de-cidades', portalController.rankingcities);
+routes.get('/noticia/:slug', portalController.onenews);
 
 routes.get('/entrar', isLoggedMiddleware.notLogged, portalController.login);
 routes.get('/cadastrar', isLoggedMiddleware.notLogged, portalController.register);
@@ -93,6 +94,7 @@ routes.get('/painel-de-controle/historico-doacoes', isLoggedMiddleware.logged, d
 routes.get('/painel-de-controle/finalizar-doacao/:id', isLoggedMiddleware.logged, dashboardController.donatedone);
 
 routes.get('/painel-de-controle/sistema-de-pagamentos', isLoggedMiddleware.logged, dashboardController.paymentsystem);
+routes.get('/likes/:slug', apiController.likes);
 
 routes.use(errorController.error404);
 
