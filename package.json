@@ -29,6 +29,7 @@
     "dev": "nodemon src/server.js"
   },
   "devDependencies": {
+    "forever": "^4.0.0",
     "nodemon": "^2.0.7",
     "sequelize-cli": "^6.2.0"
   }
