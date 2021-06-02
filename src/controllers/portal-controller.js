@@ -157,4 +157,14 @@ exports.onenews = async (req, res, next) => {
             page: '500',
         });
     }
-}
+};
+
+exports.community = async (req, res, next) => {
+    try {
+        return res.render('site/layouts/portal', {
+            page: 'community',
+        });
+    } catch (err) {
+        return res.redirect('/');
+    }
+};

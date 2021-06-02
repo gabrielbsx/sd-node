@@ -440,7 +440,7 @@ exports.picpay = async (req, res, next) => {
         });
 
         if (typeof key !== 'undefined' && typeof token !== 'undefined') {
-            const _request = axios.post('https://appws.picpay.com/ecommerce/public/payments', {
+            axios.post('https://appws.picpay.com/ecommerce/public/payments', {
                 callbackUrl: '',
                 expiresAt: new Date ((new Date.getTime()) + (1000 * 60 * 60 * 24 * 2)),
                 returnUrl: '',
@@ -455,6 +455,10 @@ exports.picpay = async (req, res, next) => {
                     'x-picpay-token': token,
                     'Content-Type': 'application/json',
                 }
+            }).then(response => {
+
+            }).catch(err => {
+                return res.redirect('/painel-de-controle');
             });
         }
 
