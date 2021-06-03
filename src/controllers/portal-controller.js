@@ -2,6 +2,7 @@ const axios = require('axios');
 const newsModel = require('../models/news-model');
 const newsCommentsModel = require('../models/newscomments-model');
 const usersModel = require('../models/users-model');
+const forumBoardsModel = require('../models/forumboards-model');
 
 exports.index = async (req, res, next) => {
     try {
@@ -161,8 +162,21 @@ exports.onenews = async (req, res, next) => {
 
 exports.community = async (req, res, next) => {
     try {
+        var { page } = req.query;
+        page = parseInt(page) || 1;
+        
+        if (typeof page === 'undefined' || page < 1) {
+            page = 1;
+        }
+
+        const boards = await forumBoardsModel.findAndCountAll({   
+            limit: 5,
+            offset: (page - 1) * 5 || 0,
+        });
+
         return res.render('site/layouts/portal', {
             page: 'community',
+            data: boards,
         });
     } catch (err) {
         return res.redirect('/');

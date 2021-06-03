@@ -36,6 +36,8 @@ routes.get('/recuperar-conta', isLoggedMiddleware.notLogged, portalController.re
 routes.get('/suporte', isLoggedMiddleware.logged, dashboardController.support);
 routes.get('/doacoes', isLoggedMiddleware.logged, dashboardController.donate);
 
+routes.get('/likes/:slug', apiController.likes);
+routes.post('/comentar/:slug', isLoggedMiddleware.logged, apiController.comment);
 
 routes.post('/login', isLoggedMiddleware.notLogged, recaptchaMiddleware, apiController.login);
 routes.post('/register', isLoggedMiddleware.notLogged, recaptchaMiddleware, apiController.register);
@@ -94,8 +96,11 @@ routes.get('/painel-de-controle/historico-doacoes', isLoggedMiddleware.logged, d
 routes.get('/painel-de-controle/finalizar-doacao/:id', isLoggedMiddleware.logged, dashboardController.donatedone);
 
 routes.get('/painel-de-controle/sistema-de-pagamentos', isLoggedMiddleware.logged, dashboardController.paymentsystem);
-routes.get('/likes/:slug', apiController.likes);
-routes.post('/comentar/:slug', isLoggedMiddleware.logged, apiController.comment);
+
+routes.get('/painel-de-controle/comunidade', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.community);
+routes.get('/painel-de-controle/criar-board', isLoggedMiddleware.logged, isAdminMiddleware, apiController.createboards);
+
+routes.get('/comunidade', portalController.community);
 
 routes.use(errorController.error404);
 

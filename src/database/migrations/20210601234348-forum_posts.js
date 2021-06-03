@@ -18,6 +18,10 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
       },
+      title: {
+        type: Sequelize.STRING(100),
+        allowNull: false,
+      },
       slug: {
         type: Sequelize.STRING(100),
         allowNull: false,

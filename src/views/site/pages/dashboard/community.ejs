@@ -1,0 +1,33 @@
+<div class="col-md-8 p-0">
+    <div class="col-md-12 my-4">
+        <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
+            Comunidade
+        </div>
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4 px-4">
+            <div class="col-md-12 row m-0 justify-content-center bg-white p-3 text-dark border-bottom">
+                <% if (data.rows.length > 0) { %>
+
+                <% } else { %>
+                    Não há boards na comunidade!    
+                <% } %>
+            </div>
+            <div class="col-md-12 mx-auto bg-white p-4 row m-0 justify-content-center">
+                <form method="post" action="/painel-de-controle/criar-board">
+                    <div class="form-group">
+                        <input class="form-control" name="name" placeholder="Nome do board">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" name="slug" placeholder="Slug do board">
+                    </div>
+                    <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                    <input type="hidden" name="action" value="validate_captcha">
+                    <div class="form-group">
+                        <button class="btn btn-primary">
+                            Criar board
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

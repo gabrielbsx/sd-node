@@ -23,6 +23,15 @@ const bcrypt = require("bcryptjs");
 const { v4 } = require('uuid');
 const axios = require('axios');
 const newsCommentsModel = require('../models/newscomments-model');
+const forumBoardsModel = require('../models/forumboards-model');
+const forumTopicsModel = require('../models/forumtopics-model');
+const forumSubTopicsModel = require('../models/forumsubtopics-model');
+const forumPostsModel = require('../models/forumposts-model');
+const forumCommentsModel = require('../models/forumcomments-model');
+const forumBoardsSchema = require('../schemas/forumBoards-schema');
+const forumTopicsSchema = require('../schemas/forumTopics-schema');
+const forumSubtopicsSchema = require('../schemas/forumSubTopics-schema');
+const forumPostsSchema = require('../schemas/forumPosts-schema');
 
 exports.register = async (req, res, next) => {
     try {
@@ -1047,6 +1056,39 @@ exports.comment = async (req, res, next) => {
         return res.redirect(`/noticia/${slug}`);
     } catch(err) {
         console.log(err);
+        return res.redirect('/');
+    }
+};
+
+exports.createboards = async (req, res, next) => {
+    try {
+        const { name, slug } = req.body;
+
+        await forumBoardsSchema
+            .validateAsync({ name: name, slug: slug }, { abortEarly: false, });
+
+        const board = await forumBoardsModel.create({
+            id_user: req.session.user.id,
+            slug: slug,
+            name: name,
+        });
+
+        if (board) {
+            req.flash('success', {
+                message: 'Board criado com sucesso!',
+            });
+        } else {
+            req.flash('error', {
+                message: 'Não foi possível criar o board!',
+            });
+        }
+
+        return res.redirect('/painel-de-controle/community');
+
+    } catch (err) {
+        req.flash('error', {
+            message: err.details || 'Erro interno!',
+        });
         return res.redirect('/');
     }
 };

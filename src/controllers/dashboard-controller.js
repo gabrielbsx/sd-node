@@ -9,6 +9,7 @@ const usersModel = require('../models/users-model');
 const donatesModel = require('../models/donates-model');
 const picpayGatewayModel = require('../models/picpaygateway-model');
 const mercadopagoModel = require('../models/mercadopago-model');
+const forumBoardsModel = require('../models/forumboards-model');
 const { v4 } = require('uuid');
 const axios = require('axios');
 require('dotenv').config();
@@ -816,5 +817,28 @@ exports.paymentsystem = async (req, res, next) => {
     } catch (err) {
         console.log(err)
         return res.redirect('/');
+    }
+};
+
+exports.community = async (req, res, next) => {
+    try {
+        var { page } = req.query;
+        page = parseInt(page) || 1;
+        
+        if (typeof page === 'undefined' || page < 1) {
+            page = 1;
+        }
+
+        const boards = await forumBoardsModel.findAndCountAll({   
+            limit: 5,
+            offset: (page - 1) * 5 || 0,
+        });
+
+        return res.render('site/layouts/dashboard', {
+            page: 'community',
+            data: boards,
+        })
+    } catch (err) {
+        return res.redirect('/');   
     }
 };

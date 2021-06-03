@@ -12,6 +12,10 @@ class ForumPosts extends Model {
           type: DataTypes.UUIDV4,
           allowNull: false,
         },
+        title: {
+          type: DataTypes.STRING(100),
+          allowNull: false,
+        },
         content: {
           type: DataTypes.TEXT,
           allowNull: false,
@@ -19,6 +23,11 @@ class ForumPosts extends Model {
         like: {
           type: DataTypes.INTEGER.UNSIGNED,
           allowNull: false,
+        },
+        slug: {
+          type: DataTypes.STRING(100),
+          allowNull: false,
+          unique: true,
         },
     }, {
       sequelize,

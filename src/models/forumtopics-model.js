@@ -16,6 +16,11 @@ class ForumTopics extends Model {
           type: DataTypes.STRING(100),
           allowNull: false,
         },
+        slug: {
+          type: DataTypes.STRING(100),
+          allowNull: false,
+          unique: true,
+        },
     }, {
       sequelize,
       modelName: 'forum_topics'
