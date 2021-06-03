@@ -36,7 +36,7 @@ app.use(flash());
 app.use(cookieSession({
     name: 'session',
     keys: [process.env.SECRET],
-    maxAge: 1 * 60 * 60 * 100,
+    maxAge: 60 * 60 * 60 * 1000,
 }));
 app.set('trust proxy', 1);
 app.set('views', path.join(__dirname, '/views'));
