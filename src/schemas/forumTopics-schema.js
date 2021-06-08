@@ -1,14 +1,14 @@
 const Joi = require('joi');
 
 module.exports = Joi.object().keys({
-    name: Joi.string()
-        .max(255)
+    title: Joi.string()
+        .max(100)
         .required()
         .messages({
-            'string.base': 'Nome inválido!',
-            'string.empty': 'Nome do pacote não pode ser vázio!',
-            'string.max': 'Nome do pacote muito grande!',
-            'string.required': 'Nome do pacote obrigatório!',
+            'string.base': 'Título inválido!',
+            'string.empty': 'Título do pacote não pode ser vázio!',
+            'string.max': 'Título do pacote muito grande!',
+            'string.required': 'Título do pacote obrigatório!',
         }),
 
     slug: Joi.string()

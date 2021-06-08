@@ -4,15 +4,104 @@
             Comunidade
         </div>
         <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4 px-4">
-            <div class="col-md-12 row m-0 justify-content-center bg-white p-3 text-dark border-bottom">
+            <div class="col-md-12 row m-0 p-0 justify-content-center bg-white p-3 text-dark border-bottom">
                 <% if (data.rows.length > 0) { %>
+                    <% for (let i = 0; data.rows.length > i; i++) { %>
+                        <div class="col-md-12 m-0 row justify-content-center bg-light border">
+                            <div class="col-md-12 m-0 justify-content-center bg-light p-3 border-bottom">
+                                <%= data.rows[i].name %>
+                            </div>
+                            <div class="col-md-12 m-0 bg-light p-3">
+                                <% if (data.rows[i].forum_topics.length > 0) { %>
+                                    <% for (let j = 0; data.rows[i].forum_topics.length > j; j++) { %>
+                                        <div class="col-md-12">
+                                            <div class="col-md-12 bg-dark py-2 text-light">
+                                                <%= data.rows[i].forum_topics[j].title %>
+                                            </div>
+                                            <div class="col-md-12 bg-white border p-4 text-left border-top text-dark text-dark">
+                                                <% if (data.rows[i].forum_topics[j].length > 0) { %>
+                                                    <% for (let l = 0; data.rows[i].forum_topics[j].length > l; l++) { %>
+                                                        <div class="row justify-content-center">
+                                                            <div class="col-md-12">
+                                                                <%= data.rows[i].forum_topics[j].name %>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                Testes
+                                                            </div>
+                                                        </div>
+                                                    <% } %>
+                                                <% } else { %>
+                                                    <div class="row justify-content-center">
+                                                        Não há subtópicos
+                                                    </div>
+                                                <% } %>
+                                                <div class="row col-md-12 m-0 my-2 p-4 justify-content-center bg-light border">
+                                                    <form method="POST" action="/painel-de-controle/criar-subtopico">
+                                                        <div class="form-group border-bottom">
+                                                            <h5>Criação de subtópicos</h5>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input class="form-control" name="title" placeholder="Título do subtópico">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input class="form-control" name="slug" placeholder="Slug do subtópico">
+                                                        </div>
+                                                        <div class="form-group justify-content-center text-center">
+                                                            <button class="btn btn-primary">
+                                                                Criar subtópico
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                <% } else { %>
+                                    Não há tópicos e subtópicos neste board.
+                                <% } %>
+                            </div>
 
+                        </div>
+                    <% } %>
+                    <div class="col-md-12 my-2 p-3 border bg-light">
+                        <form method="post" action="/painel-de-controle/criar-topico">
+                            <div class="form-group border-bottom">
+                                <h5>Criação de tópicos</h5>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" name="title" placeholder="Título do tópico">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" name="slug" placeholder="Slug do tópico">
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" name="id_board">
+                                    <% for (let k = 0; k < data.rows.length; k++) { %>
+                                        <option value="<%= data.rows[k].id %>"><%= data.rows[k].name %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                            <input type="hidden" class="g-recaptcha-response" name="g-recaptcha-response">
+                            <input type="hidden" name="action" value="validate_captcha">
+                            <div class="form-group">
+                                <button class="btn btn-primary">
+                                    Criar tópico
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 <% } else { %>
-                    Não há boards na comunidade!    
+                    <div class="col-md-12 my-2">
+                        Não há boards na comunidade!    
+                    </div>
                 <% } %>
+                <%- include('../../partials/pagination.ejs') %>
             </div>
-            <div class="col-md-12 mx-auto bg-white p-4 row m-0 justify-content-center">
+            <div class="col-md-12 mx-auto bg-light p-4 row m-0 justify-content-center">
                 <form method="post" action="/painel-de-controle/criar-board">
+                    <div class="form-group text-dark border-bottom">
+                        <h5>Criação de boards</h5>
+                    </div>
                     <div class="form-group">
                         <input class="form-control" name="name" placeholder="Nome do board">
                     </div>

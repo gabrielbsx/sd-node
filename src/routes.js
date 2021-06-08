@@ -5,11 +5,13 @@ const portalController = require('./controllers/portal-controller');
 const dashboardController = require('./controllers/dashboard-controller');
 const errorController = require('./controllers/error-controller');
 const apiController = require('./controllers/api-controller');
+const restController = require('./controllers/rest-controller');
 
 const isLoggedMiddleware = require('./middlewares/isLogged-middleware');
 const isAdminMiddleware = require('./middlewares/isAdmin-middleware');
 const envMiddleware = require('./middlewares/environment-middleware');
 const recaptchaMiddleware = require('./middlewares/recaptcha-middleware');
+const authenticateMiddleware = require('./middlewares/authenticate-middleware');
 
 routes.use(envMiddleware);
 
@@ -98,7 +100,13 @@ routes.get('/painel-de-controle/finalizar-doacao/:id', isLoggedMiddleware.logged
 routes.get('/painel-de-controle/sistema-de-pagamentos', isLoggedMiddleware.logged, dashboardController.paymentsystem);
 
 routes.get('/painel-de-controle/comunidade', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.community);
-routes.get('/painel-de-controle/criar-board', isLoggedMiddleware.logged, isAdminMiddleware, apiController.createboards);
+routes.post('/painel-de-controle/criar-board', isLoggedMiddleware.logged, isAdminMiddleware, apiController.createboards);
+routes.post('/painel-de-controle/criar-topico', isLoggedMiddleware.logged, isAdminMiddleware, apiController.createtopic);
+
+routes.post('/api/v1/login', restController.login);
+routes.post('/api/v1/verify', authenticateMiddleware, restController.verify);
+
+routes.get('/api/v1/userdata', authenticateMiddleware, restController.userdata);
 
 routes.get('/comunidade', portalController.community);
 

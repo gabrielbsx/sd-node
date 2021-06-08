@@ -3,6 +3,8 @@ const newsModel = require('../models/news-model');
 const newsCommentsModel = require('../models/newscomments-model');
 const usersModel = require('../models/users-model');
 const forumBoardsModel = require('../models/forumboards-model');
+const forumTopicsModel = require('../models/forumtopics-model');
+const forumSubTopicsModel = require('../models/forumsubtopics-model');
 
 exports.index = async (req, res, next) => {
     try {
@@ -172,6 +174,12 @@ exports.community = async (req, res, next) => {
         const boards = await forumBoardsModel.findAndCountAll({   
             limit: 5,
             offset: (page - 1) * 5 || 0,
+            include: [{
+                model: forumTopicsModel,
+                include: [{
+                    model: forumSubTopicsModel,
+                }],
+            }],
         });
 
         return res.render('site/layouts/portal', {
@@ -179,6 +187,7 @@ exports.community = async (req, res, next) => {
             data: boards,
         });
     } catch (err) {
+        console.log(err)
         return res.redirect('/');
     }
 };

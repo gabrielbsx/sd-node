@@ -3,13 +3,53 @@
         <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
             Comunidade
         </div>
-        <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4">
-            <div class="col-md-12 row m-0">
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4 px-4">
+            <div class="col-md-12 row m-0 p-0 justify-content-center bg-white p-3 text-dark border-bottom">
                 <% if (data.rows.length > 0) { %>
-
+                    <% for (let i = 0; data.rows.length > i; i++) { %>
+                        <div class="col-md-12 m-0 row justify-content-center bg-light border">
+                            <div class="col-md-12 m-0 justify-content-center bg-light p-3 border-bottom">
+                                <%= data.rows[i].name %>
+                            </div>
+                            <div class="col-md-12 m-0 bg-light p-3">
+                                <% if (data.rows[i].forum_topics.length > 0) { %>
+                                    <% for (let j = 0; data.rows[i].forum_topics.length > j; j++) { %>
+                                        <div class="col-md-12">
+                                            <div class="col-md-12 bg-dark py-2 text-light">
+                                                <%= data.rows[i].forum_topics[j].title %>
+                                            </div>
+                                            <div class="col-md-12 bg-white border p-4 text-left border-top text-dark text-dark">
+                                                <% if (data.rows[i].forum_topics[j].length > 0) { %>
+                                                    <% for (let l = 0; data.rows[i].forum_topics[j].length > l; l++) { %>
+                                                        <div class="row justify-content-center">
+                                                            <div class="col-md-12">
+                                                                <%= data.rows[i].forum_topics[j].name %>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                Testes
+                                                            </div>
+                                                        </div>
+                                                    <% } %>
+                                                <% } else { %>
+                                                    <div class="row justify-content-center">
+                                                        Não há subtópicos
+                                                    </div>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                <% } else { %>
+                                    Não há tópicos e subtópicos neste board.
+                                <% } %>
+                            </div>
+                        </div>
+                    <% } %>
                 <% } else { %>
-                    Não há boards na comunidade!    
+                    <div class="col-md-12 my-2">
+                        Não há boards na comunidade!    
+                    </div>
                 <% } %>
+                <%- include('../partials/pagination.ejs') %>
             </div>
         </div>
     </div>

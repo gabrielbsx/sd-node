@@ -1067,7 +1067,10 @@ exports.createboards = async (req, res, next) => {
         await forumBoardsSchema
             .validateAsync({ name: name, slug: slug }, { abortEarly: false, });
 
+        const id = v4();
+
         const board = await forumBoardsModel.create({
+            id: id,
             id_user: req.session.user.id,
             slug: slug,
             name: name,
@@ -1083,12 +1086,50 @@ exports.createboards = async (req, res, next) => {
             });
         }
 
-        return res.redirect('/painel-de-controle/community');
+        return res.redirect('/painel-de-controle/comunidade');
 
     } catch (err) {
         req.flash('error', {
             message: err.details || 'Erro interno!',
         });
-        return res.redirect('/');
+        console.log(err);
+        return res.redirect('/painel-de-controle/comunidade');
+    }
+};
+
+exports.createtopic = async (req, res, next) => {
+    try {
+        const { title, slug, id_board } = req.body;
+
+        await forumTopicsSchema
+            .validateAsync({ title: title, slug: slug }, { abortEarly: false, });
+
+        const id = v4();
+
+        const topic = await forumTopicsModel.create({
+            id: id,
+            id_board: id_board,
+            id_user: req.session.user.id,
+            slug: slug,
+            title: title,
+        });
+
+        if (topic) {
+            req.flash('success', {
+                message: 'Tópico criado com sucesso!',
+            });
+        } else {
+            req.flash('error', {
+                message: 'Não foi possível criar o tópico!',
+            });
+        }
+
+        return res.redirect('/painel-de-controle/comunidade');
+    } catch (err) {
+        req.flash('error', {
+            message: err.details || 'Erro interno!',
+        });
+        console.log(err);
+        return res.redirect('/painel-de-controle/comunidade');
     }
 };
