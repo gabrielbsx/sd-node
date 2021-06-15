@@ -26,7 +26,7 @@
                                                                 <%= data.rows[i].forum_topics[j].name %>
                                                             </div>
                                                             <div class="col-md-12">
-                                                                Testes
+                                                                .
                                                             </div>
                                                         </div>
                                                     <% } %>
@@ -45,6 +45,9 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <input class="form-control" name="slug" placeholder="Slug do subtópico">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input class="form-control" type="hidden" name="id_topic" value="<%= data.rows[i].forum_topics[j].id %>">
                                                         </div>
                                                         <div class="form-group justify-content-center text-center">
                                                             <button class="btn btn-primary">

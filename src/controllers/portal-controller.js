@@ -5,6 +5,7 @@ const usersModel = require('../models/users-model');
 const forumBoardsModel = require('../models/forumboards-model');
 const forumTopicsModel = require('../models/forumtopics-model');
 const forumSubTopicsModel = require('../models/forumsubtopics-model');
+const droplistModel = require('../models/droplist-model');
 
 exports.index = async (req, res, next) => {
     try {
@@ -187,7 +188,7 @@ exports.community = async (req, res, next) => {
             data: boards,
         });
     } catch (err) {
-        console.log(err)
+        console.log(err);
         return res.redirect('/');
     }
 };

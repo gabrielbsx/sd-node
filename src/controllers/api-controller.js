@@ -1133,3 +1133,78 @@ exports.createtopic = async (req, res, next) => {
         return res.redirect('/painel-de-controle/comunidade');
     }
 };
+
+exports.createsubtopic = async (req, res, next) => {
+    try {
+        const { title, slug, id_topic } = req.body;
+
+        await forumSubtopicsSchema
+            .validateAsync({ title: title, slug: slug }, { abortEarly: false, });
+
+        const id = v4();
+
+        const topic = await forumTopicsModel.findOne({
+            where: {
+                id: id_topic,
+            },
+        });
+
+        if (topic) {
+            const subtopic = await forumSubTopicsModel.create({
+                id: id,
+                id_user: req.session.user.id,
+                id_topic: id_topic,
+                slug: slug,
+                title: title,
+            });
+    
+            if (subtopic) {
+                req.flash('success', {
+                    message: 'Subtópico criado com sucesso!',
+                });
+            } else {
+                req.flash('error', {
+                    message: 'Não foi possível criar o subtópico!',
+                });
+            }
+        } else {
+            req.flash('error', {
+                message: 'Tópico inexistente!',
+            });
+        }
+
+        return res.redirect('/painel-de-controle/comunidade');
+    } catch (err) {
+        req.flash('error', {
+            message: err.details || 'Erro interno!',
+        });
+        return res.redirect('/painel-de-controle/comunidade');
+    }
+};
+
+exports.droplist = async (req, res, next) => {
+    try {
+        const {
+            mapname,
+            slug,
+        } = req.body;
+
+        const map = await droplistModel.create({
+            mapname: mapname,
+            slug: slug,
+        });
+
+        if (map) {
+            return res.json({
+                message: 'Droplist criado com sucesso!',
+            });
+        }
+
+        return res.json({
+            message: 'Não foi possível criar o droplist',
+        });
+    } catch(err) {
+        console.log(err);
+        return res.redirect('/');
+    }
+};

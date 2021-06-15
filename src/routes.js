@@ -102,6 +102,7 @@ routes.get('/painel-de-controle/sistema-de-pagamentos', isLoggedMiddleware.logge
 routes.get('/painel-de-controle/comunidade', isLoggedMiddleware.logged, isAdminMiddleware, dashboardController.community);
 routes.post('/painel-de-controle/criar-board', isLoggedMiddleware.logged, isAdminMiddleware, apiController.createboards);
 routes.post('/painel-de-controle/criar-topico', isLoggedMiddleware.logged, isAdminMiddleware, apiController.createtopic);
+routes.post('/painel-de-controle/criar-subtopico', isLoggedMiddleware.logged, isAdminMiddleware, apiController.createsubtopic);
 
 routes.post('/api/v1/login', restController.login);
 routes.post('/api/v1/verify', authenticateMiddleware, restController.verify);
