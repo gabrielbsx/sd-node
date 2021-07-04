@@ -3,6 +3,7 @@ const userModel = require('../models/users-model');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+
 module.exports = class Game {
     game = process.env.GAME_DIR;
     binaryAccount = this.game + 'base.bin';
@@ -24,13 +25,15 @@ module.exports = class Game {
         try {
             const request = await axios.get(url, {
                 headers: {
-                    'x-wyd-token': jwt.sign({}, process.env.JWT_SECRET),
+                    'Authorization': `Bearer: ${jwt.sign({}, process.env.JWT_SECRET)}`,
                     'content-type': 'application/json',
                 },
             });
+            console.log(request);
 
             return request;
         } catch (err) {
+            console.log(err);
             return {}
         }
     }
@@ -49,16 +52,15 @@ module.exports = class Game {
     async getAccount(username) {
         try {
             if (await this.userExists(username)) {
-                const account = await this.request(`${process.env.GAME_API}/account/${username}`);
+                const account = await this.request(`${process.env.GAME_API}account/${username}`);
 
-                if (account.status === 200) {
+                if (account.data.status == 'success') {
                     if (Object.values(account.data).length > 0) {
                         if (user) {
                             return account.data;
                         }
                     }
                 }
-    
             }
             
             return false;
@@ -70,37 +72,32 @@ module.exports = class Game {
     async userExists(username) {
         try {
 
-            const account = await this.request(`${process.env.GAME_API}/accountexists/${username}`);
+            const account = await this.request(`${process.env.GAME_API}account/accountexists/${username}`);
 
-            if (account.status === 200) {
-                if (account.data) {
-                    const user = await userModel.findOne({
-                        where: {
-                            username: username,
-                        },
-                    });
-                    if (user) {
-                        return user;
-                    }
+            if (account.data.status == 'success') {
+                const user = await userModel.findOne({
+                    where: {
+                        username: username,
+                    },
+                });
+                if (user) {
+                    return user;
                 }
             }
 
             return false;
         } catch (err) {
-            console.log(err);
             return false;
         }
     }
 
-    async createAccount(username, password) {
+    async createAccount(username, password, numericpass) {
         try {
 
-            const account = await this.request(`${process.env.GAME_API}/createaccount/${username}/${password}`);
+            const account = await this.request(`${process.env.GAME_API}account/createaccount/${username}/${password}/${numericpass}`);
 
-            if (account.status === 200) {
-                if (account.data) {
-                    return true;
-                }
+            if (account.data.status == 'success') {
+                return true;
             }
             
             return false;
@@ -111,12 +108,10 @@ module.exports = class Game {
 
     async changePassword(username, password) {
         try {
-            const account = await this.request(`${process.env.GAME_API}/updateaccount/${username}/${password}`);
+            const account = await this.request(`${process.env.GAME_API}account/updateaccount/${username}/${password}`);
 
-            if (account.status === 200) {
-                if (account.data) {
-                    return true;
-                }
+            if (account.data.status == 'success') {
+                return true;
             }
 
             return false;

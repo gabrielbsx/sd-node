@@ -110,6 +110,7 @@ routes.post('/api/v1/verify', authenticateMiddleware, restController.verify);
 routes.get('/api/v1/userdata', authenticateMiddleware, restController.userdata);
 
 routes.get('/comunidade', portalController.community);
+routes.get('/droplist', portalController.droplist);
 
 routes.use(errorController.error404);
 

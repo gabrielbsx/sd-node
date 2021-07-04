@@ -18,6 +18,10 @@ class Users extends Model {
           type: DataTypes.STRING(60),
           allowNull: false,
         },
+        masterkey: {
+          type: DataTypes.STRING(60),
+          alloNull: false,
+        },
         email: {
           type: DataTypes.STRING(100),
           allowNull: false,

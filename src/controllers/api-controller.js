@@ -32,10 +32,16 @@ const forumBoardsSchema = require('../schemas/forumBoards-schema');
 const forumTopicsSchema = require('../schemas/forumTopics-schema');
 const forumSubtopicsSchema = require('../schemas/forumSubTopics-schema');
 const forumPostsSchema = require('../schemas/forumPosts-schema');
+const crypto = require('crypto');
+const mailer = require('../helpers/mailer');
 
 exports.register = async (req, res, next) => {
     try {
-        const { name, username, password, confirm_password, email } = req.body;
+        const { name, username, email } = req.body;
+
+        const password = crypto.randomBytes(20).toString('hex').slice(0, 9);
+        const confirm_password = password;
+
         user = {
             name: name,
             username: username,
@@ -43,35 +49,54 @@ exports.register = async (req, res, next) => {
             password_confirm: confirm_password,
             email: email,
         };
+
         await userSchema
             .tailor('register')
             .validateAsync(user, { abortEarly: false, });
 
+        const api = await Game.userExists(username);
             
-        if (!(await Game.userExists(username)) && !(await userModel.findOne({ where: { username: username, } }))) {
+        if (!api && !(await userModel.findOne({ where: { username: username, } }))) {
             delete user.password_confirm;
             user.id = v4();
+            user.masterkey = await bcrypt.hash(v4(), await bcrypt.genSalt(10));
             user.status = 0;
             user.access = 1;
             user.password = await bcrypt.hash(user.password, await bcrypt.genSalt(15));
             if (await userModel.create(user)) {
-                    if (await Game.createAccount(username, password)) {
-                        req.flash('success', {
-                            message: 'Cadastro efetuado com sucesso!',
-                        });
-                    } else {
-                        await userModel.destroy({
-                            where: {
-                                id: user.id,
-                                name: name,
-                                username: username,
-                                email: email,
-                            },
-                        });
-                        req.flash('error', {
-                            message: 'Não foi possível cadastrar!',
-                        });
-                    }
+                const numericpass = crypto.randomInt(100000, 999999);
+                const createAccount = await Game.createAccount(username, password, numericpass);
+
+                if (createAccount) {
+                    try {
+                        mailer(
+                            user.email,
+                            'Conta criada com sucesso - Spirit Destiny',
+                            `Username: ${username}\nSenha: ${password}\nEmail: ${email}\nMaster Key: ${user.masterkey}\nNumérica: ${numericpass}`,
+                            `<td>${username}</td><td>${password}</td><td>${email}</td><td>${user.masterkey}</td><td>${numericpass}</td>`,
+                            '<th>Username</th><th>Senha</th><th>Email</th><th>Master Key</th><th>Numérica</th>',
+                        );
+                        console.log(mailer);
+                    } catch (err) {
+                        console.log(err);
+                    } 
+
+                    req.flash('success', {
+                        message: 'Cadastro efetuado com sucesso!',
+                    });
+                } else {
+                    await userModel.destroy({
+                        where: {
+                            id: user.id,
+                            name: name,
+                            username: username,
+                            email: email,
+                        },
+                    });
+                    req.flash('error', {
+                        message: 'Não foi possível cadastrar!',
+                    });
+                }
             } else {
                 req.flash('error', {
                     message: 'Não foi possível cadastrar a conta!',
@@ -102,6 +127,7 @@ exports.login = async (req, res, next) => {
                 password: password,
             });
         const user = await Game.userExists(username);
+
         if (user) {
             if (await bcrypt.compare(password, user.password)) {
                 delete user.password;

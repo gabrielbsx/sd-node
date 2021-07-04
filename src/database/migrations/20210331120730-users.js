@@ -20,6 +20,11 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
+      masterkey: {
+        type: Sequelize.STRING(60),
+        allowNull: false,
+        unique: true,
+      },
       password: {
         type: Sequelize.STRING(60),
         allowNull: false,

@@ -15,6 +15,8 @@ const forumTopicsModel = require('./models/forumtopics-model');
 const forumSubtopicsModel = require('./models/forumsubtopics-model');
 const forumPostsModel = require('./models/forumposts-model');
 const forumCommentsModel = require('./models/forumcomments-model');
+const droplistModel = require('./models/droplist-model');
+const droplistItemsModel = require('./models/droplistitems-model');
 
 const conn = new Sequelize(dbConfig);
 
@@ -33,6 +35,8 @@ forumTopicsModel.init(conn);
 forumSubtopicsModel.init(conn);
 forumPostsModel.init(conn);
 forumCommentsModel.init(conn);
+droplistModel.init(conn);
+droplistItemsModel.init(conn);
 
 /**
  * FOREIGN KEYS
@@ -83,6 +87,9 @@ guidesModel.hasMany(guideArticlesModel, { foreignKey: 'id_guide' });
 
 guideArticlesModel.belongsTo(guidesModel, { foreignKey: 'id_guide' });
 guideArticlesModel.belongsTo(usersModel, { foreignKey: 'id_user' });
+
+droplistModel.hasMany(droplistItemsModel, { foreignKey: 'droplist_id' });
+droplistItemsModel.belongsTo(droplistModel, { foreignKey: 'droplist_id' });
 
 
 module.exports = conn;

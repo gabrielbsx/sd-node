@@ -6,6 +6,10 @@ const forumBoardsModel = require('../models/forumboards-model');
 const forumTopicsModel = require('../models/forumtopics-model');
 const forumSubTopicsModel = require('../models/forumsubtopics-model');
 const droplistModel = require('../models/droplist-model');
+const droplistItemsModel = require('../models/droplistitems-model');
+const itemicon = require('../helpers/itemicon');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 exports.index = async (req, res, next) => {
     try {
@@ -81,7 +85,7 @@ exports.serverlist = async (req, res, next) => {
     try {
         const { server } = req.params;
 
-        const serverlist = await axios.get('http://51.222.128.81/serv00.htm');
+        const serverlist = await axios.get('http://144.217.19.50/serv00.htm');
 
         return res.send(serverlist.data);
     } catch (err) {
@@ -192,3 +196,30 @@ exports.community = async (req, res, next) => {
         return res.redirect('/');
     }
 };
+
+exports.droplist = async (req, res, next) => {
+    try {
+        const droplist = await axios.get('http://144.217.19.50/droplist', {
+            headers: {
+                'Authorization': `Bearer: ${jwt.sign({}, process.env.JWT_SECRET)}`,
+                'content-type': 'application/json',
+            },
+        });
+
+        const npcs = await axios.get('http://144.217.19.50/droplist/npcs', {
+            headers: {
+                'Authorization': `Bearer: ${jwt.sign({}, process.env.JWT_SECRET)}`,
+                'content-type': 'application/json',
+            },
+        });
+
+        return res.render('site/layouts/portal', {
+            page: 'droplist',
+            droplist: droplist.data,
+            data: npcs.data,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.redirect('/');
+    }
+}

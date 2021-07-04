@@ -29,7 +29,7 @@
                                     <span class="time-ago font-weight-light"><%= data.rows[i].createdAt %></span>
                                 </div>
                                 <div class="col-md-12 my-1">
-                                    <%- data.rows[i].content.substring(0, 100).replaceAll('<p>', '').replaceAll('</p>', '') %>...
+                                    <%- data.rows[i].content.substring(0, 100).replace(/<[^>]+>/g, '') %>...
                                     <div class="">
                                         <a class="col-md-12" href="/noticia/<%= data.rows[i].slug %>">
                                             Ler mais
@@ -39,7 +39,6 @@
                             </div>
                         </div>
                     </div>
-
                 <% } %>
                 <%- include('../partials/pagination.ejs') %>
             <% } %>

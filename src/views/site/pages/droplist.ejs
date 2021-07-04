@@ -1,0 +1,64 @@
+<div class="col-md-8 p-0">
+    <div class="col-md-12 my-4">
+        <div class="col-md-12 py-3 bg-warning text-dark text-uppercase font-weight-bold">
+            Droplist
+        </div>
+        <div style="background-color: rgba(0,0,0,0.5);" class="text-light py-4 px-4">
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    Mapa:
+                </div>
+                <div class="col-md-12">
+                    <select id="maps" class="form-control">
+                        <% if (Object.keys(droplist).length > 0) { %>
+                            <% const mapas = Object.keys(droplist); %>
+                            <% for (let i = 0; i < mapas.length; i++) { %>
+                                <option value="<%= mapas[i].replaceAll(' ', '-').replaceAll('+', '').replaceAll('º', '').replaceAll('Á', 'A') %>"><%= mapas[i] %></option>
+                            <% } %>
+                        <% } else { %>
+                            <option value="">-</option>
+                        <% } %>
+                    </select>
+                    <button class="btn btn-primary mt-4" onclick="getDroplist();">
+                        Buscar
+                    </button>
+                </div>
+            </div>
+            <% const spots = Object.keys(data); %>
+            <% if (spots.length > 0) { %>
+                <% for (let i = 0; i < spots.length; i++) { %>
+                    <div style="display: none;" class="row <%= spots[i].replaceAll(' ', '-').replaceAll('+', '').replaceAll('º', '').replaceAll('Á', 'A') %>">
+                        <div class="col-md-12">
+                            <table id="droplist" class="table droplist table-hover table-striped table-dark table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Mobname</th>
+                                        <th>Itemicons</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% let mobs = data[spots[i]]; %>
+                                    <% for (let j = 0; j < mobs.length; j++) { %>
+                                        <tr>
+                                            <td><%= mobs[j].MobInfo.MobName[0].Value.toString().replaceAll('_', ' ') %></td>
+                                            <% let items = mobs[j].MobInfo.Carry[0].Item %>
+                                            <td>
+                                            <% if (typeof items !== 'undefined') { %>
+                                                <% items.map(item => { %>
+                                                    <img width="35px" height="35px" src="/public/icones/<%= item.Index[0] %>.jpg">
+                                                <% }) %>
+                                            <% } %>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <% } %>
+            <% } else { %>
+                Aguardando o update na droplist
+            <% } %>
+        </div>
+    </div>
+</div>
