@@ -21,6 +21,9 @@ exports.index = async (req, res, next) => {
         const data = await newsModel.findAndCountAll({
             limit: 5,
             offset: (page - 1) * 5 || 0,
+            order: [
+                ['created_at', 'DESC']
+            ],
         });
         return res.render('site/layouts/portal', {
             data: data,
@@ -185,6 +188,9 @@ exports.community = async (req, res, next) => {
                     model: forumSubTopicsModel,
                 }],
             }],
+            order: [
+                ['created_at', 'DESC']
+            ],
         });
 
         return res.render('site/layouts/portal', {

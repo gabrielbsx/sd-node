@@ -44,8 +44,14 @@
                                             <% let items = mobs[j].MobInfo.Carry[0].Item %>
                                             <td>
                                             <% if (typeof items !== 'undefined') { %>
+                                                <% var itemsNoRepeated = []; %>
                                                 <% items.map(item => { %>
-                                                    <img width="35px" height="35px" src="/public/icones/<%= item.Index[0] %>.jpg">
+                                                    <% if (itemsNoRepeated.includes(item.Index[0]) === false) { %> 
+                                                        <% itemsNoRepeated.push(item.Index[0]) %>
+                                                    <% } %>
+                                                <% }) %>
+                                                <% itemsNoRepeated.forEach(item => { %>
+                                                    <img width="35px" height="35px" src="/public/icones/<%= item %>.jpg">
                                                 <% }) %>
                                             <% } %>
                                             </td>

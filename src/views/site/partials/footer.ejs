@@ -37,7 +37,7 @@
                         <a href="/tickets">Tickets</a>
                     </li>
                     <li>
-                        <a href="https://discord.gg/sAezuTKTtS" target="_blank">Canal Discord 24/7</a>
+                        <a href="https://discord.gg/WAEACNvDkV" target="_blank">Canal Discord 24/7</a>
                     </li>
                     <li>
                         <a href="/regras">Regras</a>
@@ -46,6 +46,33 @@
             </div>
         </div>
         <div class="info">
+            <!-- Messenger Chat Plugin Code -->
+            <div id="fb-root"></div>
+
+            <!-- Your Chat Plugin code -->
+            <div id="fb-customer-chat" class="fb-customerchat">
+            </div>
+
+            <script>
+                var chatbox = document.getElementById('fb-customer-chat');
+                chatbox.setAttribute("page_id", "111684911167520");
+                chatbox.setAttribute("attribution", "setup_tool");
+
+                window.fbAsyncInit = function () {
+                    FB.init({
+                        xfbml: true,
+                        version: 'v11.0'
+                    });
+                };
+
+                (function (d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id)) return;
+                    js = d.createElement(s); js.id = id;
+                    js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+                    fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+            </script>
             <div class="desc">© 2021 Spirit Destiny <a href="/">spirit-destiny.com</a></div>
         </div>
     </div>
@@ -64,16 +91,16 @@
     });
 
     function getDroplist() {
-        const tableId =  $("#maps").val();
+        const tableId = $("#maps").val();
         if (currentDroplist !== '') {
             $('.' + currentDroplist).hide('slow');
         }
-        
+
         $('.' + tableId).show('slow');
         currentDroplist = tableId;
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#droplist').DataTable();
     });
 </script>
@@ -82,7 +109,7 @@
 
     moment.locale('pt-br');
     $('.message').delay(1 * 60 * 60).hide('slow');
-    
+
     async function setrecaptcha() {
         grecaptcha.ready(function () {
             grecaptcha.execute("<%= recaptcha_site %>", {

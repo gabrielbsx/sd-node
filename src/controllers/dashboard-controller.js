@@ -90,6 +90,9 @@ exports.listnews = async (req, res, next) => {
             include: [{
                 model: usersModel,
             }],
+            order: [
+                ['created_at', 'DESC']
+            ],
         });
         
         return res.render('site/layouts/dashboard', {
@@ -490,6 +493,9 @@ exports.donatepackages = async (req, res, next) => {
             include: [{
                 model: donateitemsModel,
             }],
+            order: [
+                ['created_at', 'DESC']
+            ],
         });
 
         return res.render('site/layouts/dashboard', {
@@ -516,6 +522,9 @@ exports.donate = async (req, res, next) => {
             include: [{
                 model: donateitemsModel,
             }],
+            order: [
+                ['created_at', 'DESC']
+            ],
         });
 
         return res.render('site/layouts/dashboard', {
@@ -765,6 +774,9 @@ exports.historydonate = async (req, res, next) => {
                     model: usersModel,
                 },
             ],
+            order: [
+                ['created_at', 'DESC']
+            ],
         });
 
         return res.render('site/layouts/dashboard', {
@@ -791,6 +803,9 @@ exports.donatedone = async (req, res, next) => {
                     model: donateitemsModel,
                 }],
             }],
+            order: [
+                ['created_at', 'DESC']
+            ],
         });
 
         if (purchase) {
@@ -840,6 +855,9 @@ exports.community = async (req, res, next) => {
                     model: forumSubTopicsModel,
                 }],
             }],
+            order: [
+                ['created_at', 'DESC']
+            ],
         });
 
         return res.render('site/layouts/dashboard', {
